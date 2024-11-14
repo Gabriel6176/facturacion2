@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Archivo Procesado</title>
+    </head>
+    <body>
+        <h2>Archivo procesado exitosamente</h2>
+        <p>Archivo generado: {{ output_file }}</p>
+        <a href="{% url 'file_download' output_file %}">Descargar archivo</a>
+    </body>
+</html>
