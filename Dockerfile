@@ -17,24 +17,3 @@ EXPOSE 8000
 # Ejecuta Gunicorn para servir la aplicación Django
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "nombre_proyecto.wsgi:application"]
 
-#--------------------------
-# nginx/nginx.conf
-server {
-    listen 80;
-
-    # Servir archivos estáticos
-    location /static/ {
-        alias /app/static/;
-    }
-
-    # Redirige las solicitudes a Gunicorn
-    location / {
-        proxy_pass http://web:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-
-#--------------------------
