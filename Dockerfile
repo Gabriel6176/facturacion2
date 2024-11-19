@@ -5,7 +5,7 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Copia el archivo de requisitos
-COPY ./facturacion/requirements.txt /app/requirements.txt
+COPY ./requirements.txt /app/requirements.txt
 
 # Instala las dependencias
 RUN pip install --no-cache-dir -r requirements.txt
