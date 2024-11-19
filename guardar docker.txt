@@ -1,0 +1,38 @@
+ISTALAR DOCKER
+------------------------------------------------------------------------
+#Instala los paquetes necesarios para usar los repositorios de Docker:
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+------------------------------------------------------------------------
+#Importa la clave GPG oficial de Docker:
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+------------------------------------------------------------------------
+#Añade el repositorio estable de Docker:
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+------------------------------------------------------------------------
+#Actualiza la lista de paquetes e instala Docker:
+sudo apt install -y docker-ce docker-ce-cli containerd.io
+------------------------------------------------------------------------
+#Comprueba que Docker está instalado y funcionando
+sudo systemctl status docker
+------------------------------------------------------------------------
+#También puedes verificar la versión instalada:
+docker --version
+------------------------------------------------------------------------
+ULTIMA VERSION DOCKER COMPOSE
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+DAR PERMISO DE EJECUCION
+sudo chmod +x /usr/local/bin/docker-compose
+------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------

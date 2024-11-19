@@ -11,7 +11,7 @@ COPY ./facturacion/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copia el proyecto
-COPY ./facturacion /app
+COPY ./ /app
 
 # Expone el puerto para el servidor de desarrollo
 EXPOSE 8000

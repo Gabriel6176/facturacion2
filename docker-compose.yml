@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   django:
@@ -7,13 +6,11 @@ services:
       dockerfile: Dockerfile
     container_name: django_app
     volumes:
-      - ./facturacion:/app
+      - ./:/app
     ports:
       - "8000:8000"
     environment:
       - DEBUG=True
-    depends_on:
-      - nginx
 
   nginx:
     image: nginx:latest

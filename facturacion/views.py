@@ -46,7 +46,7 @@ def process_files(base_file_path, uploaded_file_path):
 
     # Cargar `df2` y `df4` desde el archivo base `base.xlsx`
     df2 = pd.read_excel(base_file_path, sheet_name='raw_data', usecols="A:Q", header=None)
-    df4 = pd.read_excel(base_file_path, sheet_name='Precios', usecols="A:C", header=None)
+    df4 = pd.read_excel(base_file_path, sheet_name='Precios', usecols="A:D", header=None)
 
     # Crear un DataFrame vacío para guardar los resultados
     df3 = pd.DataFrame(columns=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
