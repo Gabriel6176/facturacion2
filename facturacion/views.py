@@ -62,6 +62,8 @@ def file_download_view(request, filename):
     return HttpResponse("Archivo no encontrado", status=404)
 
 def process_files(base_file_path, uploaded_file_path):
+
+
     # Cargar `df1` desde el archivo subido por el usuario, usando la hoja `TX`
     df1 = pd.read_excel(uploaded_file_path, sheet_name='TX', usecols="A:B", header=None)
 
@@ -69,22 +71,33 @@ def process_files(base_file_path, uploaded_file_path):
     df2 = pd.read_excel(base_file_path, sheet_name='raw_data', usecols="A:Q", header=None)
     df4 = pd.read_excel(base_file_path, sheet_name='Precios', usecols="A:C", header=None)
 
-    # Crear un DataFrame vacío para guardar los resultados
-    df3 = pd.DataFrame(columns=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+    # Crear DataFrames vacíos para "Facturación" y "No Encontrados"
+    df_facturacion = pd.DataFrame(columns=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+    df_no_encontrados = pd.DataFrame(columns=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
 
-    # Procesamiento, iterando sobre df1 y buscando valores en df2 y df4
+    # Procesar registros de `df1`
     for index, (value, value2) in df1.iloc[1:, [0, 1]].iterrows():
         matches = df2[df2.iloc[:, 5] == value]
         if matches.empty:
+            # Si no se encuentra en `df2`, agregar al DataFrame "No Encontrados"
             row_to_add = pd.DataFrame({
-                1: ["NO ENCONTRADO"], 2: [None], 3: [None], 4: [None], 5: [None], 
+                1: ["NO ENCONTRADO"], 2: [None], 3: [None], 4: [None], 5: [None],
                 6: [None], 7: [None], 8: [None], 9: [None], 10: [value], 11: [value2]
             })
-            df3 = pd.concat([df3, row_to_add], ignore_index=True)
+            df_no_encontrados = pd.concat([df_no_encontrados, row_to_add], ignore_index=True)
         else:
+            # Si se encuentra, procesar normalmente y agregar al DataFrame "Facturación"
             for _, row in matches.iterrows():
                 modified_value = str(row[2])[3:-2] if isinstance(row[2], str) else row[2]
-                precio = df4[df4.iloc[:, 0] == row[7]].iloc[0, 2] if not df4[df4.iloc[:, 0] == row[7]].empty else "NO ENCONTRADO"
+                
+                # Quitar espacios en ambos valores, convertir a string y hacer una sola comparación
+                df4_filtered = df4[df4.iloc[:, 0].astype(str).str.replace(" ", "", regex=False) == str(row[7]).replace(" ", "")]
+            
+                if not df4_filtered.empty:
+                    precio = df4_filtered.iloc[0, 2]  # Precio tomado de df4
+                else:
+                    precio = "NO ENCONTRADO"
+
                 row_to_add = pd.DataFrame({
                     1: [row[0]], 
                     2: [modified_value], 
@@ -98,17 +111,26 @@ def process_files(base_file_path, uploaded_file_path):
                     10: [value], 
                     11: [value2]
                 })
-                df3 = pd.concat([df3, row_to_add], ignore_index=True)
+                df_facturacion = pd.concat([df_facturacion, row_to_add], ignore_index=True)
     
-    # Asignar los nombres de las columnas de Nombre0,0-DNI-Afiliado0,2-Fecha0,6-Cantidad0,9-Codigo0,7-Descripcion0,8-Precio,Total;TX;LOTE
-    df3.columns = [df2.iloc[0, 0], "DNI", df2.iloc[0, 2], df2.iloc[0, 6], df2.iloc[0, 9], df2.iloc[0, 7], df2.iloc[0, 8], "Precio", "Total", "TX", "LOTE"]
+    # Asignar nombres de columnas
+    column_names = [
+        df2.iloc[0, 0], "DNI", df2.iloc[0, 2], df2.iloc[0, 6], df2.iloc[0, 9], 
+        df2.iloc[0, 7], df2.iloc[0, 8], "Precio", "Total", "TX", "LOTE"
+    ]
+    df_facturacion.columns = column_names
+    df_no_encontrados.columns = column_names
 
     # Generar nombre de archivo de salida
     output_filename = f"facturacion_{datetime.datetime.now().strftime('%d%b%y')}.xlsx"
     output_file_path = os.path.join(settings.MEDIA_ROOT, output_filename)
-    df3.to_excel(output_file_path, sheet_name='Facturacion', index=False)
-    return output_file_path
 
+    # Guardar ambos DataFrames en diferentes hojas del archivo Excel
+    with pd.ExcelWriter(output_file_path, engine='openpyxl') as writer:
+        df_facturacion.to_excel(writer, sheet_name='Facturación', index=False)
+        df_no_encontrados.to_excel(writer, sheet_name='No Encontrados', index=False)
+
+    return output_file_path
 
 @login_required
 def dashboard_view(request):
