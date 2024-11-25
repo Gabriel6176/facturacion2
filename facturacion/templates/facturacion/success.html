@@ -1,11 +1,28 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Archivo Procesado</title>
-    </head>
-    <body>
-        <h2>Archivo procesado exitosamente</h2>
-        <p>Archivo generado: {{ output_file }}</p>
-        <a href="{% url 'file_download' output_file %}">Descargar archivo</a>
-    </body>
-</html>
+{% extends 'index.html' %}
+
+{% block title %}<title>Hospital SAMIC El Calafate</title>{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white text-center">
+                    <h4>Procesamiento Exitoso</h4>
+                </div>
+                <div class="card-body text-center">
+                    <p class="mb-3">El archivo fue procesado exitosamente.</p>
+                    <p><strong>Archivo generado:</strong> {{ output_file }}</p>
+                    <a href="{% url 'file_download' output_file %}" class="btn btn-primary mt-3">
+                        Descargar Archivo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Botón compacto para volver al Dashboard -->
+<div class="text-center mt-3">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">Volver a Listado de Utilidades</a>
+</div>
+{% endblock content %}

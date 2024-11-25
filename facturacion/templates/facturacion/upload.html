@@ -1,14 +1,75 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Subir Archivo</title>
-    </head>
-    <body>
-        <h2>Subir Archivo de Facturación</h2>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Cargar y Procesar</button>
-        </form>
-    </body>
-</html>
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Subir Archivo{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">
+        {% if form_type == 'form1' %}
+            Subir Archivo - TX
+        {% elif form_type == 'form2' %}
+            Subir Archivo - Formulario 2
+        {% elif form_type == 'form3' %}
+            Subir Archivo - Formulario 3
+        {% endif %}
+    </h2>
+
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <!-- Imagen dinámica basada en el tipo de formulario -->
+                <img src="{% if form_type == 'form1' %}{% static 'images/utility1.jpg' %}
+                         {% elif form_type == 'form2' %}{% static 'images/utility2.jpg' %}
+                         {% elif form_type == 'form3' %}{% static 'images/utility3.jpg' %}
+                         {% endif %}" 
+                    class="card-img-top img-custom" 
+                    alt="Imagen del formulario"
+                >
+                
+                <div class="card-body">
+                    <h4 class="card-title text-center">Formulario de Subida</h4>
+                    <br>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- Renderizar el formulario -->
+                        {{ form.as_p }}
+                        <br>
+                        <div class="d-grid mt-3">
+                            <button type="submit" class="btn btn-primary">Cargar y Procesar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón compacto para volver al Dashboard -->
+    <div class="text-center mt-3">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">Volver a Listado de Utilidades</a>
+    </div>
+</div>
+
+<style>
+    /* Ajusta el tamaño de la imagen en la tarjeta */
+    .img-custom {
+        height: 150px; /* Altura fija */
+        object-fit: cover; /* Ajusta la imagen sin distorsión */
+        width: 100%; /* Ancho completo */
+    }
+
+    /* Ajustes generales del botón "Volver al Dashboard" */
+    .btn-sm {
+        font-size: 0.875rem; /* Tamaño más pequeño del texto */
+        padding: 0.25rem 0.5rem; /* Espaciado compacto */
+    }
+
+    /* Opcional: margen reducido entre los elementos */
+    .mt-3 {
+        margin-top: 1rem !important;
+    }
+</style>
+{% endblock %}
+
+
+

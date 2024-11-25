@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-)_a(!r&c2+5sp=8$hq*=cr^a9zy-3%+ssko)d3mvkb+5)*xwv0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.79.133', 'localhost', '127.0.0.1' ]
 
 
 # Application definition
@@ -118,7 +118,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+
+# Directorio donde buscará los archivos estáticos durante el desarrollo
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
+# Directorio de recolección (solo en producción)
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -127,3 +135,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
+
+
+LOGIN_REDIRECT_URL = '/dashboard/'  # Redirige al dashboard después de iniciar sesión
+LOGIN_URL = '/login/'  # Redirige al login si no está autenticado
+LOGOUT_REDIRECT_URL = '/login/'  # Redirige al login después de cerrar sesión
+
+CSRF_COOKIE_SECURE = True  # Solo permitir cookies CSRF en conexiones HTTPS
+SESSION_COOKIE_SECURE = True  # Solo permitir cookies de sesión en conexiones HTTPS
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_COOKIE_NAME = 'sessionid'

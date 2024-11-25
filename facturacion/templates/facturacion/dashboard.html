@@ -1,0 +1,67 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Listado de Utilidades</h2>
+    <div class="row mt-4">
+        <!-- Card 1 -->
+        <div class="col-md-4">
+            <div class="card card-custom">
+                <img src="{% static 'images/utility1.jpg' %}" class="card-img-top img-custom" alt="Utilidad 1">
+                <div class="card-body">
+                    <h5 class="card-title">Facturación</h5>
+                    <p class="card-text">Facturación Caja de Servicios Sociales.</p>
+                    <!-- Botón que redirige a upload.html con el formulario 1 -->
+                    <a href="{% url 'file_upload' %}?form=form1" class="btn btn-primary">Ir a</a>
+                </div>
+            </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="col-md-4">
+            <div class="card card-custom">
+                <img src="{% static 'images/utility2.jpg' %}" class="card-img-top img-custom" alt="Utilidad 2">
+                <div class="card-body">
+                    <h5 class="card-title">Facturación</h5>
+                    <p class="card-text">Facturación OSDE.</p>
+                    <!-- Botón que redirige a upload.html con el formulario 2 -->
+                    <a href="{% url 'file_upload' %}?form=form2" class="btn btn-primary">Ir a</a>
+                </div>
+            </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="col-md-4">
+            <div class="card card-custom">
+                <img src="{% static 'images/utility3.jpg' %}" class="card-img-top img-custom" alt="Utilidad 3">
+                <div class="card-body">
+                    <h5 class="card-title">Facturación</h5>
+                    <p class="card-text">Facturación Unión Personal.</p>
+                    <!-- Botón que redirige a upload.html con el formulario 3 -->
+                    <a href="{% url 'file_upload' %}?form=form3" class="btn btn-primary">Ir a</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Define un tamaño fijo para las tarjetas */
+    .card-custom {
+        height: 350px; /* Altura fija para las tarjetas */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Mantén el contenido distribuido */
+    }
+
+    /* Ajusta el tamaño de las imágenes dentro de las tarjetas */
+    .img-custom {
+        height: 150px; /* Altura fija para las imágenes */
+        object-fit: cover; /* Ajusta la imagen para que ocupe el espacio sin distorsión */
+        width: 100%; /* Asegúrate de que ocupe todo el ancho */
+    }
+</style>
+{% endblock %}
+
+
