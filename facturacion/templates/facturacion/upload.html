@@ -32,9 +32,35 @@
                     <br>
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <!-- Renderizar el formulario -->
-                        {{ form.as_p }}
-                        <br>
+                        
+                        <!-- Selección de Mes -->
+                        <div class="mb-3">
+                            <label for="mes" class="form-label">Mes</label>
+                            <select name="mes" id="mes" class="form-select" required>
+                                <option value="" disabled selected>Seleccione un mes</option>
+                                {% for opcion in opciones_mes %}
+                                    <option value="{{ opcion.mes }}">{{ opcion.get_mes_display }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Selección de Año -->
+                        <div class="mb-3">
+                            <label for="año" class="form-label">Año</label>
+                            <select name="año" id="año" class="form-select" required>
+                                <option value="" disabled selected>Seleccione un año</option>
+                                {% for año in opciones_anos %}
+                                    <option value="{{ año }}">{{ año }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Renderizar el formulario para subir archivo -->
+                        <div class="mb-3">
+                            <label for="file" class="form-label">Seleccionar Archivo</label>
+                            {{ form.file }}
+                        </div>
+
                         <div class="d-grid mt-3">
                             <button type="submit" class="btn btn-primary">Cargar y Procesar</button>
                         </div>
@@ -70,6 +96,3 @@
     }
 </style>
 {% endblock %}
-
-
-

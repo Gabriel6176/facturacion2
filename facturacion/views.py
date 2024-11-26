@@ -7,6 +7,31 @@ from django.http import HttpResponse
 from .forms import UploadFileForm1, UploadFileForm2, UploadFileForm3
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from .models import MesAno
+
+
+def dashboard_view(request):
+    # Leer los años y meses disponibles desde la base de datos
+    opciones_mes_ano = MesAno.objects.all()
+
+    if request.method == 'POST':
+        # Procesar los valores seleccionados
+        mes_seleccionado = request.POST.get('mes')
+        ano_seleccionado = request.POST.get('año')
+
+        # Aquí puedes hacer algo con los valores, como redirigir o realizar cálculos
+        # Por ejemplo: redirigir con los parámetros seleccionados
+        return render(request, 'facturacion/dashboard.html', {
+            'opciones_mes_ano': opciones_mes_ano,
+            'mes_seleccionado': mes_seleccionado,
+            'año_seleccionado': ano_seleccionado,
+            'success_message': f"Seleccionaste: {mes_seleccionado} {ano_seleccionado}"
+        })
+
+    return render(request, 'facturacion/dashboard.html', {
+        'opciones_mes_ano': opciones_mes_ano,
+    })
+
 
 @login_required
 def file_upload_view(request):
@@ -16,40 +41,55 @@ def file_upload_view(request):
         'form3': UploadFileForm3,
     }
 
-    # Obtener el parámetro `form` de la URL
-    selected_form_key = request.GET.get('form', 'form1')  # Por defecto, 'form1'
-    selected_form_class = form_classes.get(selected_form_key)  # Obtener la clase del formulario
+    # Obtener el formulario seleccionado desde la URL
+    selected_form_key = request.GET.get('form', 'form1')
+    selected_form_class = form_classes.get(selected_form_key)
 
     if not selected_form_class:
-        # Si el parámetro `form` no es válido, muestra un error o redirige a una página válida
         return HttpResponse("Formulario no válido", status=400)
 
-    # Instanciar el formulario seleccionado
-    selected_form = selected_form_class()
+    # Obtener todas las opciones de Mes y Año desde la base de datos
+    opciones_mes_ano = MesAno.objects.all()
+
+    # Extraer meses únicos
+    opciones_mes = []
+    seen_mes = set()
+    for opcion in opciones_mes_ano:
+        if opcion.mes not in seen_mes:
+            opciones_mes.append(opcion)
+            seen_mes.add(opcion.mes)
+
+    # Extraer años únicos
+    opciones_anos = sorted(set(opcion.año for opcion in opciones_mes_ano))
 
     if request.method == 'POST':
-        # Procesar el formulario enviado
+        # Procesar datos enviados
         form = selected_form_class(request.POST, request.FILES)
         if form.is_valid():
-            # Manejo del archivo subido
+            mes = request.POST.get('mes')
+            año = request.POST.get('año')
+
+            # Procesar archivo subido
             uploaded_file = request.FILES['file']
             uploaded_file_path = os.path.join(settings.MEDIA_ROOT, uploaded_file.name)
             with open(uploaded_file_path, 'wb+') as destination:
                 for chunk in uploaded_file.chunks():
                     destination.write(chunk)
 
-            # Procesar el archivo base con el subido
+            # Realizar el procesamiento
             base_file_path = os.path.join(settings.MEDIA_ROOT, 'base.xlsx')
-            output_file_path = process_files(base_file_path, uploaded_file_path)
+            output_file_path = process_files(base_file_path, uploaded_file_path, mes, año)
 
-            # Retornar la vista de éxito
+            # Retornar vista de éxito
             output_filename = os.path.basename(output_file_path)
             return render(request, 'facturacion/success.html', {'output_file': output_filename})
 
-    # Renderizar solo el formulario seleccionado
+    # Renderizar formulario
     return render(request, 'facturacion/upload.html', {
-        'form': selected_form,
-        'form_type': selected_form_key,  # Agregamos el tipo de formulario al contexto si es necesario
+        'form': selected_form_class(),
+        'form_type': selected_form_key,
+        'opciones_mes': opciones_mes,
+        'opciones_anos': opciones_anos,
     })
 
 def file_download_view(request, filename):
@@ -61,7 +101,7 @@ def file_download_view(request, filename):
             return response
     return HttpResponse("Archivo no encontrado", status=404)
 
-def process_files(base_file_path, uploaded_file_path):
+def process_files(base_file_path, uploaded_file_path, mes, año):
 
 
     # Cargar `df1` desde el archivo subido por el usuario, usando la hoja `TX`
