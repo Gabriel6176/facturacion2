@@ -16,6 +16,9 @@ COPY ./ /app
 # Expone el puerto para el servidor de desarrollo
 EXPOSE 8000
 
+# Ejecutar collectstatic
+RUN python manage.py collectstatic --noinput
+
 # Comando para iniciar el servidor Django
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "myproject.wsgi:application"]
 
