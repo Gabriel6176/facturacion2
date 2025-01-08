@@ -54,6 +54,15 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        <!--Seleccion tipo proceso-->
+                        <div class="mb-3">
+                            <label for="tipo_proceso" class="form-label">Tipo de Proceso</label>
+                            <select name="tipo_proceso" id="tipo_proceso" class="form-select" required>
+                                <option value="" disabled selected>Seleccione el tipo de proceso</option>
+                                <option value="ambulatorio">Ambulatorio</option>
+                                <option value="internacion">Internación</option>
+                            </select>
+                        </div>
 
                         <!-- Renderizar el formulario para subir archivo -->
                         <div class="mb-3">

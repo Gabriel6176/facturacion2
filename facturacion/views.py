@@ -44,6 +44,7 @@ def file_upload_view(request):
         if form.is_valid():
             mes = request.POST.get('mes')
             año = request.POST.get('año')
+            tipo_proceso = request.POST.get('tipo_proceso')
 
             # Procesar archivo subido
             uploaded_file = request.FILES['file']
@@ -54,7 +55,7 @@ def file_upload_view(request):
 
             # Realizar el procesamiento
             base_file_path = os.path.join(settings.MEDIA_ROOT, 'base.xlsx')
-            output_file_path = process_files(base_file_path, uploaded_file_path, mes, año)
+            output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
 
             # Retornar vista de éxito
             output_filename = os.path.basename(output_file_path)
@@ -77,12 +78,17 @@ def file_download_view(request, filename):
             return response
     return HttpResponse("Archivo no encontrado", status=404)
 
-def process_files(base_file_path, uploaded_file_path, mes, año):
+def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
     # Cargar `df1` desde el archivo subido por el usuario, usando la hoja `TX`
     df1 = pd.read_excel(uploaded_file_path, sheet_name='TX', usecols="A:B", header=None)
 
-    # Cargar `df2` y `df4` desde el archivo base `base.xlsx`
-    df2 = pd.read_excel(base_file_path, sheet_name='raw_data', usecols="A:Q", header=None)
+    # Selección condicional del DataFrame `df2`
+    if tipo_proceso == 'internacion':
+        df2 = pd.read_excel(base_file_path, sheet_name='raw_data_internacion', usecols="A:Q", header=None)
+    else:
+        df2 = pd.read_excel(base_file_path, sheet_name='raw_data', usecols="A:Q", header=None)
+
+    # Cargar `df4` desde el archivo base
     df4 = pd.read_excel(base_file_path, sheet_name='Precios', usecols="A:C", header=None)
 
     # Crear DataFrames vacíos para clasificar los registros
