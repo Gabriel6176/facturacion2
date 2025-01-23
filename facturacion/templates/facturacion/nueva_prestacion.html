@@ -1,0 +1,38 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Nueva Prestación{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Nueva Prestación</h2>
+    <p>Para el presupuesto de: {{ presupuesto.cliente }} ({{ presupuesto.numero }})</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Campo para cantidad -->
+        <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" required>
+        </div>
+
+        <!-- Menú desplegable para seleccionar prestación -->
+        <div class="mb-3">
+            <label for="prestacion" class="form-label">Prestación</label>
+            <select name="prestacion" id="prestacion" class="form-select" required>
+                <option value="" disabled selected>Seleccione una prestación</option>
+                {% for prestacion in prestaciones %}
+                    <option value="{{ prestacion.id }}">
+                        {{ prestacion.descripcion }} ({{ prestacion.codigo }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Botones de acción -->
+        <button type="submit" class="btn btn-primary">Guardar Prestación</button>
+        <a href="{% url 'detalle_presupuestador' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'index.html' %}
+
+{% block title %}Detalle del Presupuesto{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Detalle del Presupuesto</h2>
+    <div class="text-end"><a href="{% url 'detalle_presupuestador' %}" class="btn btn-primary mt-3">Volver a Presupuestos</a></div>
+    <br>
+    <div class="card mb-3" style="width: 33%; margin-left: 0;">
+        <div class="card-body">
+          <div class="row">
+            <!-- Columna de títulos -->
+            <div class="col-4">
+              <p><strong>Presupuesto #:</strong></p>
+              <p><strong>Fecha:</strong></p>
+              <p><strong>Cliente:</strong></p>
+              <p><strong>Documento:</strong></p>
+            </div>
+            <!-- Columna de datos -->
+            <div class="col-8">
+              <p>{{ presupuesto.numero }}</p>
+              <p>{{ presupuesto.fecha }}</p>
+              <p>{{ presupuesto.cliente }}</p>
+              <p>{{ presupuesto.documento }}</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    <div class="text-end"><a href="{% url 'agregar_item' presupuesto.numero %}" class="btn btn-primary mt-3">Agregar Item</a></div>
+
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th class="text-left">Código</th>
+                <th class="text-left">Descripción</th>
+                <th class="text-center">Cantidad</th>
+                <th class="text-center">Precio</th>
+                <th class="text-center">Total</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ detalle.prestacion.codigo }}</td>
+                <td>{{ detalle.prestacion.descripcion }}</td>
+                <td class="text-center">{{ detalle.item.cantidad }}</td>
+                <td class="text-end">{{ detalle.prestacion.total }}</td>
+                <td class="text-end">{{ detalle.calcular_total }}</td>
+                <td>
+                    <!-- Formulario para eliminar un item -->
+                    <form method="POST" action="{% url 'eliminar_item' presupuesto.numero %}" class="d-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="item_id" value="{{ detalle.id }}">
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-end"><strong>Total General:</strong></td>
+                <td class="text-end">{{ total_general|floatformat:2 }}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% endblock %}
+
+

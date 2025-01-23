@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Editar Presupuesto{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Editar Presupuesto</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Guardar Cambios</button>
+        <a href="{% url 'detalle_presupuesto' presupuesto.numero %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

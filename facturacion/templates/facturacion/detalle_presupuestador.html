@@ -1,0 +1,65 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Detalle Presupuestador{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Presupuestador</h2>
+
+    <!-- Botón para crear un nuevo presupuesto -->
+    <div class="mb-4">
+        <form method="POST" action="{% url 'presupuesto_nuevo' %}">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" name="cliente" class="form-control" placeholder="Cliente" required>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="documento" class="form-control" placeholder="Documento" required>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary">Crear Nuevo Presupuesto</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Verificar si hay presupuestos -->
+    {% if presupuestos %}
+    <!-- Listado de presupuestos -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Cliente</th>
+                <th>Documento</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for presupuesto in presupuestos %}
+            <tr>
+                <td>{{ presupuesto.numero }}</td>
+                <td>{{ presupuesto.cliente }}</td>
+                <td>{{ presupuesto.documento }}</td>
+                <td>{{ presupuesto.fecha }}</td>
+                <td>
+                    <a href="{% url 'agregar_item' presupuesto.numero %}" class="btn btn-primary btn-sm me-2">Agregar Item</a>
+                    <a href="{% url 'detalle_presupuesto' presupuesto.numero %}" class="btn btn-secondary btn-sm me-2">Detalle</a>
+                    <a href="{% url 'editar_presupuesto' presupuesto.numero %}" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-info text-center" role="alert">
+        No hay presupuestos disponibles.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+

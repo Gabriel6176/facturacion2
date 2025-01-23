@@ -108,13 +108,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
-
-USE_I18N = True
-
+LANGUAGE_CODE = "es-AR"
+TIME_ZONE = "America/Argentina/Buenos_Aires"
+USE_L10N = True
+USE_THOUSAND_SEPARATOR = True
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -148,3 +147,4 @@ SESSION_COOKIE_SECURE = True  # Solo permitir cookies de sesión en conexiones H
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_NAME = 'sessionid'
+

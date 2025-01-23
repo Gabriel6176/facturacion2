@@ -24,12 +24,11 @@
         <!-- Card 2 -->
         <div class="col-md-4">
             <div class="card card-custom">
-                <img src="{% static 'images/utility2.jpg' %}" class="card-img-top img-custom" alt="Utilidad 2">
+                <img src="{% static 'images/logo_samic.jpg' %}" class="card-img-top img-custom" alt="Utilidad 2">
                 <div class="card-body">
-                    <h5 class="card-title">Facturación</h5>
-                    <p class="card-text">Facturación OSDE.</p>
-                    <!-- Botón que redirige a upload.html con el formulario 2 -->
-                    <a href="{% url 'file_upload' %}?form=form2" class="btn btn-primary">Ir a</a>
+                    <h5 class="card-title">Presupuestador</h5>
+                    <p class="card-text">Presupuesto SAMIC.</p>
+                    <a href="{% url 'detalle_presupuestador' %}" class="btn btn-primary">Ir a</a>
                 </div>
             </div>
         </div>

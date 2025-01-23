@@ -1,0 +1,83 @@
+{% extends 'index.html' %}
+
+{% block title %}Agregar Item{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h1 class="text-center">Agregar Item al Presupuesto</h1>
+            <p><strong>Presupuesto:</strong> {{ presupuesto.numero }}</p>
+            <p><strong>Cliente:</strong> {{ presupuesto.cliente }}</p>
+            <p><strong>Fecha:</strong> {{ presupuesto.fecha }}</p>
+
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <!-- Selección de servicio -->
+                <div class="form-group mb-3">
+                    <label for="servicio">Servicio</label>
+                    <select id="servicio" name="servicio" class="form-control" required>
+                        <option value="" disabled selected>Seleccione un servicio</option>
+                        {% for servicio in servicios %}
+                        <option value="{{ servicio.servicio }}">{{ servicio.servicio }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Selección de código (prestación) -->
+                <div class="form-group mb-3">
+                    <label for="prestacion">Código / Prestación</label>
+                    <select id="prestacion" name="prestacion" class="form-control" required>
+                        <option value="" disabled selected>Seleccione un código/prestación</option>
+                    </select>
+                </div>
+
+                <!-- Campo para cantidad -->
+                <div class="form-group mb-3">
+                    <label for="cantidad">Cantidad</label>
+                    <input type="number" id="cantidad" name="cantidad" class="form-control" min="1" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Agregar Item</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Manejar la selección de servicio y cargar las prestaciones asociadas
+    const servicioSelect = document.getElementById('servicio');
+    const prestacionSelect = document.getElementById('prestacion');
+
+    servicioSelect.addEventListener('change', function () {
+        const servicio = this.value;
+
+        // Limpiar las opciones actuales en el menú de prestaciones
+        prestacionSelect.innerHTML = '<option value="" disabled selected>Seleccione un código/prestación</option>';
+
+        if (servicio) {
+            fetch(`/facturacion/obtener-prestaciones/?servicio=${servicio}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length === 0) {
+                        const option = document.createElement('option');
+                        option.value = '';
+                        option.textContent = 'No hay prestaciones disponibles';
+                        prestacionSelect.appendChild(option);
+                    } else {
+                        data.forEach(prestacion => {
+                            const option = document.createElement('option');
+                            option.value = prestacion.id;
+                            option.textContent = `${prestacion.codigo} - ${prestacion.descripcion}`;
+                            prestacionSelect.appendChild(option);
+                        });
+                    }
+                })
+                .catch(error => console.error('Error al obtener prestaciones:', error));
+        }
+    });
+</script>
+{% endblock %}
+
+
+
