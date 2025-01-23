@@ -8,6 +8,7 @@
     <title>{% block title %}Hospital SAMIC El Calafate{% endblock %}</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/print.css' %}" media="print">
     <style>
         .logout-btn {
             background-color: #87CEEB; /* Color celeste */
@@ -27,17 +28,23 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">Hospital SAMIC El Calafate</a>
                 <!-- Añadimos un contenedor con utilidades de flexbox -->
-                <div class="ms-auto">
+                <div class="ms-auto d-flex align-items-center">
+                    {% if mostrar_volver %}
+                    <div class="me-3">
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">Volver a Listado de Utilidades</a>
+                    </div>
+                    {% endif %}
                     {% if user.is_authenticated %}
-                        <form method="post" action="{% url 'logout' %}" style="margin: 0;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn logout-btn">Cerrar Sesión</button>
-                        </form>
+                    <form method="post" action="{% url 'logout' %}" style="margin: 0;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn logout-btn">Cerrar Sesión</button>
+                    </form>
                     {% endif %}
                 </div>
             </div>
         </nav>
     </header>
+    
 
     <main class="container mt-4">
         {% block content %}

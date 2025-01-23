@@ -274,11 +274,13 @@ def presupuesto_nuevo(request):
     return render(request, 'facturacion/presupuesto_nuevo.html', {
         'fecha_hoy': date.today().strftime('%Y-%m-%d')  # Enviar fecha actual como string
     })
-
 @login_required
 def detalle_presupuestador(request):
     presupuestos = Presupuesto.objects.all()  # Obtén todos los presupuestos
-    return render(request, 'facturacion/detalle_presupuestador.html', {'presupuestos': presupuestos})
+    return render(request, 'facturacion/detalle_presupuestador.html', {
+        'presupuestos': presupuestos,
+        'mostrar_volver': True  # Agrega una bandera para mostrar el botón
+    })
 
 
 @login_required
@@ -332,16 +334,30 @@ def eliminar_item(request, presupuesto_id):
 
 
 def detalle_presupuesto(request, presupuesto_id):
+    # Obtiene el presupuesto o lanza un error 404 si no existe
     presupuesto = get_object_or_404(Presupuesto, pk=presupuesto_id)
+    
+    # Obtiene los detalles del presupuesto, optimizando con select_related
     detalles = DetallePrestacion.objects.filter(presupuesto=presupuesto).select_related('prestacion', 'item')
 
-    # Calcular el total general
-    total_general = detalles.aggregate(total=Sum(F('item__cantidad') * F('prestacion__total')))['total'] or 0
+    # Añadir el total de cada línea al queryset
+    for detalle in detalles:
+        detalle.total_linea = detalle.item.cantidad * detalle.prestacion.total
+        
+    # Calcula el total general usando anotaciones
+    total_general = detalles.aggregate(
+        total=Sum(F('item__cantidad') * F('prestacion__total'))
+    )['total'] or 0
 
+    # Bandera para saber si estamos en modo edición (se puede activar desde la URL)
+    modo_edicion = request.GET.get('modo_edicion') == 'true'
+
+    # Renderiza la plantilla con los datos necesarios
     return render(request, 'facturacion/detalle_presupuesto.html', {
         'presupuesto': presupuesto,
         'detalles': detalles,
         'total_general': total_general,
+        'modo_edicion': modo_edicion  # Determina si se muestran acciones de edición
     })
 
 def obtener_prestaciones(request):
@@ -385,21 +401,23 @@ def nueva_prestacion(request, presupuesto_id):
     })
 
 
+
+
 def editar_presupuesto(request, numero):
     # Obtiene el presupuesto o lanza un error 404 si no existe
     presupuesto = get_object_or_404(Presupuesto, numero=numero)
 
     if request.method == 'POST':
-        # Procesa el formulario con los datos enviados
+        # Procesa el formulario enviado
         form = PresupuestoForm(request.POST, instance=presupuesto)
         if form.is_valid():
-            # Actualiza solo los campos especificados
-            presupuesto.cliente = form.cleaned_data['cliente']
-            presupuesto.documento = form.cleaned_data['documento']
-            presupuesto.save()  # Guarda la instancia actualizada
-            return redirect('detalle_presupuesto', presupuesto_id=presupuesto.numero)  # Redirige a la vista de detalle
+            form.save()  # Guarda los cambios realizados en cliente y documento
+            return redirect('detalle_presupuesto', presupuesto_id=presupuesto.numero)  # Redirige a los detalles
     else:
         # Muestra el formulario con los datos actuales
         form = PresupuestoForm(instance=presupuesto)
 
-    return render(request, 'facturacion/editar_presupuesto.html', {'form': form, 'presupuesto': presupuesto})
+    return render(request, 'facturacion/editar_presupuesto.html', {
+        'presupuesto': presupuesto,
+        'form': form  # Formulario para editar el presupuesto
+    })

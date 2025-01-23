@@ -6,7 +6,7 @@
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center">Presupuestador</h2>
-
+    <br>
     <!-- Botón para crear un nuevo presupuesto -->
     <div class="mb-4">
         <form method="POST" action="{% url 'presupuesto_nuevo' %}">
@@ -24,7 +24,7 @@
             </div>
         </form>
     </div>
-
+    <br>
     <!-- Verificar si hay presupuestos -->
     {% if presupuestos %}
     <!-- Listado de presupuestos -->
