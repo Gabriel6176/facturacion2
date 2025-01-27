@@ -73,6 +73,7 @@ def file_upload_view(request):
         'form_type': selected_form_key,
         'opciones_mes': opciones_mes,
         'opciones_anos': opciones_anos,
+        'mostrar_volver': True
     })
 
 def file_download_view(request, filename):

@@ -46,7 +46,6 @@
                 <td>{{ presupuesto.documento }}</td>
                 <td>{{ presupuesto.fecha }}</td>
                 <td>
-                    <a href="{% url 'agregar_item' presupuesto.numero %}" class="btn btn-primary btn-sm me-2">Agregar Item</a>
                     <a href="{% url 'detalle_presupuesto' presupuesto.numero %}" class="btn btn-secondary btn-sm me-2">Detalle</a>
                     <a href="{% url 'editar_presupuesto' presupuesto.numero %}" class="btn btn-warning btn-sm">Editar</a>
                 </td>

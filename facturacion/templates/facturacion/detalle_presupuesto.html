@@ -3,103 +3,114 @@
 {% block title %}Detalle del Presupuesto{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="text-end">
-        <a href="{% url 'detalle_presupuestador' %}" class="btn btn-primary mt-3">Volver a Presupuestos</a>
-    </div>
-    <br>
-    
-    <div class="text-end">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <!-- Botón de Volver a Presupuestos -->
+        <a href="{% url 'detalle_presupuestador' %}" class="btn btn-primary me-2">Volver a Presupuestos</a>
+        
+        <!-- Botón de Imprimir -->
+        <button onclick="triggerPrint()" class="btn btn-secondary me-2">Imprimir</button>
+        
+        <!-- Botón de Editar / Volver -->
         {% if modo_edicion %}
-        <a href="{% url 'detalle_presupuesto' presupuesto.numero %}" class="btn btn-primary mt-3">Volver</a>
+        <a href="{% url 'detalle_presupuesto' presupuesto.numero %}" class="btn btn-primary">Volver</a>
         {% else %}
-        <a href="{% url 'detalle_presupuesto' presupuesto.numero %}?modo_edicion=true" class="btn btn-warning btn-m3-3">Editar Presupuesto</a>
+        <a href="{% url 'detalle_presupuesto' presupuesto.numero %}?modo_edicion=true" class="btn btn-warning">Editar Presupuesto</a>
         {% endif %}
     </div>
-    <div class="text-center mb-4">
-        <h1 class="display-5">Presupuesto Hospital Samic El Calafate</h1>
-    </div>
-    <div class="container mt-5">
-        <div class="row align-items-center">
-            <!-- Columna de la tarjeta con datos del presupuesto -->
-            <div class="col-md-8" style="max-width: 50%;">
-                <div class="card mb-3" style="width: 100%;">
-                    <div class="card-body p-2">
-                        <div class="row">
-                            <!-- Columna de títulos -->
-                            <div class="col-5">
-                                <p class="mb-1"><strong>Presupuesto #:</strong></p>
-                                <p class="mb-1"><strong>Fecha:</strong></p>
-                                <p class="mb-1"><strong>Cliente:</strong></p>
-                                <p class="mb-1"><strong>Documento:</strong></p>
-                            </div>
-                            <!-- Columna de datos -->
-                            <div class="col-4">
-                                <p class="mb-1">{{ presupuesto.numero }}</p>
-                                <p class="mb-1">{{ presupuesto.fecha }}</p>
-                                <p class="mb-1">{{ presupuesto.cliente }}</p>
-                                <p class="mb-1">{{ presupuesto.documento }}</p>
-                            </div>
+</nav>
+
+<script>
+    function triggerPrint() {
+        window.print(); // Abre el cuadro de diálogo de impresión
+    }
+</script>
+
+<!-- Título -->
+<div class="text-center mb-4">
+    <h1 class="display-5">Presupuesto Hospital Samic El Calafate</h1>
+</div>
+
+<!-- Datos del Presupuesto -->
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <!-- Columna de la tarjeta con datos del presupuesto -->
+        <div class="col-md-8" style="max-width: 50%;">
+            <div class="card mb-3" style="width: 100%;">
+                <div class="card-body p-2">
+                    <div class="row">
+                        <!-- Columna de títulos -->
+                        <div class="col-5">
+                            <p class="mb-1"><strong>Presupuesto #:</strong></p>
+                            <p class="mb-1"><strong>Fecha:</strong></p>
+                            <p class="mb-1"><strong>Cliente:</strong></p>
+                            <p class="mb-1"><strong>Documento:</strong></p>
+                        </div>
+                        <!-- Columna de datos -->
+                        <div class="col-4">
+                            <p class="mb-1">{{ presupuesto.numero }}</p>
+                            <p class="mb-1">{{ presupuesto.fecha }}</p>
+                            <p class="mb-1">{{ presupuesto.cliente }}</p>
+                            <p class="mb-1">{{ presupuesto.documento }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Columna del logo -->
-            <div class="col-md-6 text-end">
-                <img src="{% static 'images/logo_samic.jpg' %}" alt="Logo" class="img-fluid" style="max-height: 80px;">
-            </div>
+        </div>
+        <!-- Columna del logo -->
+        <div class="col-md-6 text-end">
+            <img src="{% static 'images/logo_samic.jpg' %}" alt="Logo" class="img-fluid" style="max-height: 80px;">
         </div>
     </div>
-    
-
-    
-    <div class="text-end"><a href="{% url 'agregar_item' presupuesto.numero %}" class="btn btn-primary mt-3">Agregar Item</a></div>
-
-    <table class="table table-striped mt-4">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th class="text-left">Código</th>
-                <th class="text-left">Descripción</th>
-                <th class="text-left">Servicio</th>
-                <th class="text-center">Cantidad</th>
-                <th class="text-center">Precio</th>
-                <th class="text-center">Total</th>
-                {% if modo_edicion %}
-                <th class="text-center">Acciones</th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for detalle in detalles %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td class="text-center">{{ detalle.prestacion.codigo }}</td>
-                <td>{{ detalle.prestacion.descripcion }}</td>
-                <td>{{ detalle.prestacion.servicio }}</td>
-                <td class="text-center">{{ detalle.item.cantidad }}</td>
-                <td class="text-end">{{ detalle.prestacion.total }}</td>
-                <td class="text-end">{{ detalle.total_linea|floatformat:2 }}</td>
-                {% if modo_edicion %}
-                <td class="text-center">
-                    <form method="POST" action="{% url 'eliminar_item' presupuesto.numero %}" class="d-inline">
-                        {% csrf_token %}
-                        <input type="hidden" name="item_id" value="{{ detalle.id }}">
-                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                    </form>
-                </td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="6" class="text-end"><strong>Total General:</strong></td>
-                <td class="text-end">{{ total_general|floatformat:2 }}</td>
-            </tr>
-        </tfoot>
-    </table>
 </div>
+
+<!-- Tabla con Detalles -->
+<div class="text-end"><a href="{% url 'agregar_item' presupuesto.numero %}" class="btn btn-primary mt-3">Agregar Item</a></div>
+<table class="table table-striped mt-4">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th class="text-left">Código</th>
+            <th class="text-left">Descripción</th>
+            <th class="text-left">Servicio</th>
+            <th class="text-center">Cantidad</th>
+            <th class="text-center">Precio</th>
+            <th class="text-center">Total</th>
+            {% if modo_edicion %}
+            <th class="text-center">Acciones</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for detalle in detalles %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td class="text-center">{{ detalle.prestacion.codigo }}</td>
+            <td>{{ detalle.prestacion.descripcion }}</td>
+            <td>{{ detalle.prestacion.servicio }}</td>
+            <td class="text-center">{{ detalle.item.cantidad }}</td>
+            <td class="text-end">{{ detalle.prestacion.total }}</td>
+            <td class="text-end">{{ detalle.total_linea|floatformat:2 }}</td>
+            {% if modo_edicion %}
+            <td class="text-center">
+                <form method="POST" action="{% url 'eliminar_item' presupuesto.numero %}" class="d-inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_id" value="{{ detalle.id }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="6" class="text-end"><strong>Total General:</strong></td>
+            <td class="text-end">{{ total_general|floatformat:2 }}</td>
+        </tr>
+    </tfoot>
+</table>
 {% endblock %}
 
 
