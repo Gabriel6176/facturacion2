@@ -127,7 +127,7 @@ STATICFILES_DIRS = [
 ]
 
 # Directorio de recolección (solo en producción)
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -148,3 +148,25 @@ SESSION_COOKIE_SECURE = True  # Solo permitir cookies de sesión en conexiones H
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_NAME = 'sessionid'
 
+X_FRAME_OPTIONS = 'DENY'  # Previene que el sitio sea cargado en iframes
+CSRF_COOKIE_HTTPONLY = True  # Hace que la cookie CSRF sea inaccesible a JavaScript
+SESSION_COOKIE_HTTPONLY = True  # Hace que la cookie de sesión sea inaccesible a JavaScript
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs/error.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
