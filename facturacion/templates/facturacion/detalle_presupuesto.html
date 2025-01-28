@@ -46,20 +46,20 @@
 <!-- Datos del Presupuesto -->
 <div class="container mt-5">
     <div class="row align-items-center">
-        <!-- Columna de la tarjeta con datos del presupuesto -->
-        <div class="col-md-8" style="max-width: 50%;">
-            <div class="card mb-3" style="width: 100%;">
+        <!-- Columna Izquierda: Tarjeta de Datos del Presupuesto -->
+        <div class="col-md-6 d-flex justify-content-start">
+            <div class="card mb-3" style="width: 100%; max-width: 500px;">
                 <div class="card-body p-2">
                     <div class="row">
-                        <!-- Columna de títulos -->
+                        <!-- Columna de Títulos -->
                         <div class="col-5">
                             <p class="mb-1"><strong>Presupuesto #:</strong></p>
                             <p class="mb-1"><strong>Fecha:</strong></p>
                             <p class="mb-1"><strong>Cliente:</strong></p>
                             <p class="mb-1"><strong>Documento:</strong></p>
                         </div>
-                        <!-- Columna de datos -->
-                        <div class="col-4">
+                        <!-- Columna de Datos -->
+                        <div class="col-7">
                             <p class="mb-1">{{ presupuesto.numero }}</p>
                             <p class="mb-1">{{ presupuesto.fecha }}</p>
                             <p class="mb-1">{{ presupuesto.cliente }}</p>
@@ -69,12 +69,14 @@
                 </div>
             </div>
         </div>
-        <!-- Columna del logo -->
-        <div class="col-md-6 text-end">
+
+        <!-- Columna Derecha: Logo -->
+        <div class="col-md-6 d-flex justify-content-end">
             <img src="{% static 'images/logo_samic.jpg' %}" alt="Logo" class="img-fluid" style="max-height: 80px;">
         </div>
     </div>
 </div>
+
 
 <!-- Tabla con Detalles -->
 
