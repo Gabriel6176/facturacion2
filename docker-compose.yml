@@ -25,3 +25,4 @@ services:
       - ./media:/app/media
     depends_on:
       - django
+    command: /bin/bash -c "chmod -R 755 /app/staticfiles && chown -R www-data:www-data /app/staticfiles && nginx -g 'daemon off;'"
