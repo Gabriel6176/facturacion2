@@ -15,7 +15,7 @@ from django.db.models import F, Sum
 from django.contrib import messages
 from .forms import PresupuestoForm
 
-@login_required
+
 def file_upload_view(request):
     form_classes = {
         'form1': UploadFileForm1,
@@ -241,7 +241,7 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
 
     return output_file_path
 
-@login_required
+
 def dashboard_view(request):
     return render(request, 'facturacion/dashboard.html')  # Renderiza la plantilla del dashboard
 
@@ -253,7 +253,7 @@ def dashboard_redirect(request):
 
 
 
-@login_required
+
 def presupuesto_nuevo(request):
     if request.method == 'POST':
         # Obtiene los datos del formulario
@@ -275,7 +275,7 @@ def presupuesto_nuevo(request):
     return render(request, 'facturacion/presupuesto_nuevo.html', {
         'fecha_hoy': date.today().strftime('%Y-%m-%d')  # Enviar fecha actual como string
     })
-@login_required
+
 def detalle_presupuestador(request):
     presupuestos = Presupuesto.objects.all()  # Obtén todos los presupuestos
     return render(request, 'facturacion/detalle_presupuestador.html', {
@@ -284,7 +284,7 @@ def detalle_presupuestador(request):
     })
 
 
-@login_required
+
 def agregar_item(request, presupuesto_id):
     presupuesto = get_object_or_404(Presupuesto, pk=presupuesto_id)
 
@@ -318,7 +318,7 @@ def agregar_item(request, presupuesto_id):
         'servicios': servicios,
     })
 
-@login_required
+
 def eliminar_item(request, presupuesto_id):
     if request.method == "POST":
         item_id = request.POST.get("item_id")  # Obtén el ID del ítem desde el formulario
@@ -369,13 +369,13 @@ def obtener_prestaciones(request):
         return JsonResponse(list(prestaciones), safe=False)
     return JsonResponse([], safe=False)
 
-@login_required
+
 def buscar_descripcion(request):
     query = request.GET.get('q', '')
     resultados = Prestacion.objects.filter(descripcion__icontains=query).values('id', 'descripcion')[:10]
     return JsonResponse(list(resultados), safe=False)
 
-@login_required
+
 def nueva_prestacion(request, presupuesto_id):
     presupuesto = get_object_or_404(Presupuesto, id=presupuesto_id)
 

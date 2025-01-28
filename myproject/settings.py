@@ -28,7 +28,7 @@ SECRET_KEY = "django-insecure-)_a(!r&c2+5sp=8$hq*=cr^a9zy-3%+ssko)d3mvkb+5)*xwv0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['192.168.79.133', 'localhost', '127.0.0.1' ]
+ALLOWED_HOSTS = ['192.168.79.137', 'localhost', '127.0.0.1' ]
 
 
 # Application definition
@@ -140,8 +140,8 @@ LOGIN_REDIRECT_URL = '/dashboard/'  # Redirige al dashboard después de iniciar 
 LOGIN_URL = '/login/'  # Redirige al login si no está autenticado
 LOGOUT_REDIRECT_URL = '/login/'  # Redirige al login después de cerrar sesión
 
-CSRF_COOKIE_SECURE = True  # Solo permitir cookies CSRF en conexiones HTTPS
-SESSION_COOKIE_SECURE = True  # Solo permitir cookies de sesión en conexiones HTTPS
+CSRF_COOKIE_SECURE = False  
+SESSION_COOKIE_SECURE = False  
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_NAME = 'sessionid'
