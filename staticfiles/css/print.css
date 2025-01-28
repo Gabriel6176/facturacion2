@@ -1,0 +1,54 @@
+@media print {
+    .print-header {
+        text-align: left;
+        margin-top: 20px;
+        margin-bottom: 30px;
+        font-weight: bold;
+    }
+
+    /* Ocultar botones y enlaces en la impresión */
+    .btn {
+        display: none;
+    }
+
+    /* Mantener los textos de celdas visibles y alineados */
+    .text-end {
+        text-align: right;
+    }
+
+    /* Estilo para tablas */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+
+    .table th,
+    .table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        color: #000;
+        text-align: left; /* Texto alineado a la izquierda por defecto */
+    }
+
+    /* Alinear valores numéricos a la derecha */
+    .table .text-end {
+        text-align: right;
+    }
+
+    /* Optimizar el diseño del cuerpo */
+    body {
+        margin: 0;
+        padding: 20px;
+        font-size: 12px;
+        line-height: 1.5;
+        color: #000;
+    }
+    @page {
+        margin: 0; /* Elimina márgenes automáticos */
+    }
+    body {
+        margin: 0;
+    }
+}
+
