@@ -3,6 +3,28 @@
 {% block title %}Detalle del Presupuesto{% endblock %}
 
 {% block content %}
+<style>
+    @media print {
+        .row {
+            display: flex !important; /* Asegura que las columnas estén en la misma fila */
+            align-items: center; /* Alinea verticalmente los elementos */
+        }
+
+        .col-md-6 {
+            flex: 0 0 50%; /* Fuerza que cada columna ocupe el 50% */
+            max-width: 50%; /* Ajusta el ancho máximo */
+        }
+
+        .card {
+            margin: 0; /* Elimina márgenes innecesarios */
+        }
+
+        img {
+            max-height: 80px; /* Mantiene el tamaño del logo */
+        }
+    }
+</style>
+
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid d-flex justify-content-between align-items-center">
@@ -76,6 +98,7 @@
         </div>
     </div>
 </div>
+
 
 
 <!-- Tabla con Detalles -->
