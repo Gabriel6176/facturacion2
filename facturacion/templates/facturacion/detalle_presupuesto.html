@@ -103,8 +103,8 @@
             <td>{{ detalle.prestacion.descripcion }}</td>
             <td>{{ detalle.prestacion.servicio }}</td>
             <td class="text-center">{{ detalle.item.cantidad }}</td>
-            <td class="text-end">{{ detalle.prestacion.total }}</td>
-            <td class="text-end">{{ detalle.total_linea|floatformat:2 }}</td>
+            <td class="text-right">{{ detalle.prestacion.total }}</td>
+            <td class="text-right">{{ detalle.total_linea|floatformat:2 }}</td>
             {% if modo_edicion %}
             <td class="text-center">
                 <form method="POST" action="{% url 'eliminar_item' presupuesto.numero %}" class="d-inline">
@@ -119,8 +119,8 @@
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="6" class="text-end"><strong>Total General:</strong></td>
-            <td class="text-end">{{ total_general|floatformat:2 }}</td>
+            <td colspan="6" class="text-right"><strong>Total General $:</strong></td>
+            <td class="text-right">{{ total_general|floatformat:2 }}</td>
         </tr>
     </tfoot>
 </table>
