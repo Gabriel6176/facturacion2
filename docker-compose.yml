@@ -7,12 +7,16 @@ services:
     container_name: django_app
     volumes:
       - ./:/app
+      - ./db.sqlite3:/app/db.sqlite3  # Monta el archivo SQLite como volumen
       - /etc/localtime:/etc/localtime:ro  # Sincroniza la hora
       - /etc/timezone:/etc/timezone:ro    # Sincroniza la zona horaria
     ports:
       - "8000:8000"
     environment:
       - DEBUG=True
+      - UID=${UID}
+      - GID=${GID}
+    command: /bin/bash -c "chown ${UID}:${GID} /app/db.sqlite3 && chmod 664 /app/db.sqlite3 && python manage.py runserver 0.0.0.0:8000"
 
   nginx:
     image: nginx:latest
