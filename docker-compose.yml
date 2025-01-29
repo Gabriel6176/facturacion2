@@ -12,14 +12,14 @@ services:
       - "8000:8000"
     environment:
       - DEBUG=False
-      - UID=1000
-      - GID=1000
+      - UID=${UID:-1000}
+      - GID=${GID:-1000}
     command: >
       /bin/bash -c "
       chown ${UID}:${GID} /app/db.sqlite3 &&
       chmod 664 /app/db.sqlite3 &&
       python manage.py collectstatic --noinput &&
-      gunicorn proyecto.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+      gunicorn myproject.wsgi:application --bind 0.0.0.0:8000 --workers 3"
 
   nginx:
     image: nginx:latest
