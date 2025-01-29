@@ -253,7 +253,7 @@ def dashboard_redirect(request):
 
 
 
-
+@login_required
 def presupuesto_nuevo(request):
     if request.method == 'POST':
         # Obtiene los datos del formulario
@@ -284,7 +284,7 @@ def detalle_presupuestador(request):
     })
 
 
-
+@login_required
 def agregar_item(request, presupuesto_id):
     presupuesto = get_object_or_404(Presupuesto, pk=presupuesto_id)
 
@@ -318,7 +318,7 @@ def agregar_item(request, presupuesto_id):
         'servicios': servicios,
     })
 
-
+@login_required
 def eliminar_item(request, presupuesto_id):
     if request.method == "POST":
         item_id = request.POST.get("item_id")  # Obtén el ID del ítem desde el formulario
@@ -333,7 +333,7 @@ def eliminar_item(request, presupuesto_id):
     # Redirige al detalle del presupuesto
     return redirect("detalle_presupuesto", presupuesto_id=presupuesto_id)
 
-
+@login_required
 def detalle_presupuesto(request, presupuesto_id):
     # Obtiene el presupuesto o lanza un error 404 si no existe
     presupuesto = get_object_or_404(Presupuesto, pk=presupuesto_id)
@@ -360,7 +360,7 @@ def detalle_presupuesto(request, presupuesto_id):
         'total_general': total_general,
         'modo_edicion': modo_edicion  # Determina si se muestran acciones de edición
     })
-
+@login_required
 def obtener_prestaciones(request):
     servicio = request.GET.get('servicio')
     print(f"Servicio solicitado: {servicio}")  # Log temporal
@@ -369,13 +369,13 @@ def obtener_prestaciones(request):
         return JsonResponse(list(prestaciones), safe=False)
     return JsonResponse([], safe=False)
 
-
+@login_required
 def buscar_descripcion(request):
     query = request.GET.get('q', '')
     resultados = Prestacion.objects.filter(descripcion__icontains=query).values('id', 'descripcion')[:10]
     return JsonResponse(list(resultados), safe=False)
 
-
+@login_required
 def nueva_prestacion(request, presupuesto_id):
     presupuesto = get_object_or_404(Presupuesto, id=presupuesto_id)
 
@@ -403,7 +403,7 @@ def nueva_prestacion(request, presupuesto_id):
 
 
 
-
+@login_required
 def editar_presupuesto(request, numero):
     # Obtiene el presupuesto o lanza un error 404 si no existe
     presupuesto = get_object_or_404(Presupuesto, numero=numero)
