@@ -141,8 +141,8 @@ LOGIN_REDIRECT_URL = '/dashboard/'  # Redirige al dashboard después de iniciar 
 LOGIN_URL = '/login/'  # Redirige al login si no está autenticado
 LOGOUT_REDIRECT_URL = '/login/'  # Redirige al login después de cerrar sesión
 
-CSRF_COOKIE_SECURE = False  
-SESSION_COOKIE_SECURE = False  
+CSRF_COOKIE_SECURE = True  
+SESSION_COOKIE_SECURE = True  
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_NAME = 'sessionid'
