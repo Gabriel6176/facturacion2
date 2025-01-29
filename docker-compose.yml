@@ -9,7 +9,6 @@ services:
       - ./:/app
       - ./db.sqlite3:/app/db.sqlite3  # Monta el archivo SQLite como volumen
       - /etc/localtime:/etc/localtime:ro  # Sincroniza la hora
-      - /etc/timezone:/etc/timezone:ro    # Sincroniza la zona horaria
     ports:
       - "8000:8000"
     environment:

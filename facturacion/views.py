@@ -241,7 +241,7 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
 
     return output_file_path
 
-
+@login_required
 def dashboard_view(request):
     return render(request, 'facturacion/dashboard.html')  # Renderiza la plantilla del dashboard
 
