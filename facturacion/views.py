@@ -15,7 +15,7 @@ from django.db.models import F, Sum
 from django.contrib import messages
 from .forms import PresupuestoForm
 
-
+@login_required
 def file_upload_view(request):
     form_classes = {
         'form1': UploadFileForm1,
@@ -76,6 +76,7 @@ def file_upload_view(request):
         'mostrar_volver': True
     })
 
+@login_required
 def file_download_view(request, filename):
     file_path = os.path.join(settings.MEDIA_ROOT, filename)
     if os.path.exists(file_path):
@@ -276,6 +277,7 @@ def presupuesto_nuevo(request):
         'fecha_hoy': date.today().strftime('%Y-%m-%d')  # Enviar fecha actual como string
     })
 
+@login_required
 def detalle_presupuestador(request):
     presupuestos = Presupuesto.objects.all()  # Obtén todos los presupuestos
     return render(request, 'facturacion/detalle_presupuestador.html', {
@@ -360,6 +362,7 @@ def detalle_presupuesto(request, presupuesto_id):
         'total_general': total_general,
         'modo_edicion': modo_edicion  # Determina si se muestran acciones de edición
     })
+
 @login_required
 def obtener_prestaciones(request):
     servicio = request.GET.get('servicio')
