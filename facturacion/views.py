@@ -4,7 +4,7 @@ import datetime
 from django.conf import settings
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import UploadFileForm1, UploadFileForm2, UploadFileForm3
+from .forms import UploadFileForm1, UploadFileForm3
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from .models import MesAno
@@ -14,12 +14,12 @@ from datetime import date
 from django.db.models import F, Sum
 from django.contrib import messages
 from .forms import PresupuestoForm
+from decimal import Decimal, InvalidOperation
 
 @login_required
 def file_upload_view(request):
     form_classes = {
         'form1': UploadFileForm1,
-        'form2': UploadFileForm2,
         'form3': UploadFileForm3,
     }
 
@@ -48,9 +48,13 @@ def file_upload_view(request):
         # Procesar datos enviados
         form = selected_form_class(request.POST, request.FILES)
         if form.is_valid():
-            mes = request.POST.get('mes')
-            año = request.POST.get('año')
-            tipo_proceso = request.POST.get('tipo_proceso')
+            mes = form.cleaned_data['mes']  # Obtener mes desde el formulario
+            año = form.cleaned_data['año']  # Obtener año desde el formulario
+            tipo_proceso = form.cleaned_data['tipo_proceso']
+            print(f"Mes: {mes} ({type(mes)})")
+            print(f"Año: {año} ({type(año)})")
+            print(f"Tipo de proceso: {tipo_proceso} ({type(tipo_proceso)})")
+            
 
             # Procesar archivo subido
             uploaded_file = request.FILES['file']
@@ -87,6 +91,13 @@ def file_download_view(request, filename):
     return HttpResponse("Archivo no encontrado", status=404)
 
 def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
+    print(f"Mes recibido: {mes} ({type(mes)})")
+    print(f"Año recibido: {año} ({type(año)})")
+    print(f"Tipo de proceso recibido: {tipo_proceso} ({type(tipo_proceso)})")
+
+    mes = str(mes)  # Convertir mes a cadena
+    año = str(año)  # Convertir año a cadena
+
     # Cargar `df1` desde el archivo subido por el usuario, usando la hoja `TX`
     df1 = pd.read_excel(uploaded_file_path, sheet_name='TX', usecols="A:B", header=None)
 
@@ -108,9 +119,32 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
     # Agregar una columna "procesado" a df1 con valores iniciales en False
     df1['procesado'] = False
 
-    # Filtrar `df2` por mes y año (columna 6 -> Fecha en formato DD/MM/YYYY)
     df2['Fecha'] = pd.to_datetime(df2.iloc[:, 6], format='%d/%m/%Y', errors='coerce')
-    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+
+    # Extraer mes y año como enteros de la columna 'Fecha'
+    df2['Mes'] = df2['Fecha'].dt.month
+    df2['Año'] = df2['Fecha'].dt.year
+
+    print("df2['Mes']:", df2['Mes'].dtype)
+    print("df2['Año']:", df2['Año'].dtype)
+
+    # Filtrar el DataFrame usando las columnas de mes y año como cadenas
+    df2_filtrado = df2[
+        (df2['Mes'].astype(str) == mes) & 
+        (df2['Año'].astype(str) == año)
+    ]
+
+    # Eliminar las columnas auxiliares 'Mes' y 'Año' (opcional)
+    df2_filtrado = df2_filtrado.drop(columns=['Mes', 'Año'])
+
+    print(df2_filtrado)
+    # Filtrar `df2` por mes y año (columna 6 -> Fecha en formato DD/MM/YYYY)
+    #df2['Fecha'] = pd.to_datetime(df2.iloc[:, 6], format='%d/%m/%Y', errors='coerce')
+    #print(df2)
+    #df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+    #mes = int(mes)
+    #año = int(año)
+    #print (df2_filtrado)
 
     # Iterar sobre el DataFrame filtrado `df2_filtrado`
     for _, row in df2_filtrado.iterrows():
@@ -124,9 +158,18 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
         else:
             precio = "NO ENCONTRADO"
 
-        # Cálculo del total (cantidad * precio)
-        cantidad = row[9]
-        total = float(precio) * float(cantidad) if isinstance(precio, (int, float)) and pd.notna(cantidad) else None
+        # Cálculo del total (cantidad * precio) con manejo de errores
+        try:
+            cantidad = int(row[9])  # Intentar convertir a entero
+        except (ValueError, TypeError):
+            cantidad = 0  # O un valor predeterminado, o manejar el error como necesites
+            print(f"Error: cantidad no válida en la fila: {row}")
+
+        try:
+            total = float(precio) * float(cantidad) if isinstance(precio, (int, float)) and pd.notna(cantidad) else None
+        except (ValueError, TypeError):
+            total = None
+            print(f"Error: precio o cantidad no válidos en la fila: {row}")
 
         # Obtener el valor del lote desde la columna B de df1 basado en la coincidencia
         valor_lote = df1.loc[df1.iloc[:, 0] == valor_buscar, 1].values[0] if valor_buscar in df1.iloc[:, 0].values else None

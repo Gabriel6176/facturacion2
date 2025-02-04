@@ -1,7 +1,5 @@
 from django.db import models
 
-from django.db import models
-
 class MesAno(models.Model):
     MESES = [
         ('01', 'Enero'), ('02', 'Febrero'), ('03', 'Marzo'), ('04', 'Abril'),

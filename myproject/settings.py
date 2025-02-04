@@ -28,7 +28,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECRET_KEY = "django-insecure-)_a(!r&c2+5sp=8$hq*=cr^a9zy-3%+ssko)d3mvkb+5)*xwv0"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.79.138', 'https://192.168.79.138','http://192.168.79.138', 'localhost', '127.0.0.1' ]
 
@@ -113,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = "es-AR"
 TIME_ZONE = "America/Argentina/Buenos_Aires"
 USE_L10N = True
-USE_THOUSAND_SEPARATOR = True
+#USE_THOUSAND_SEPARATOR = True
 USE_TZ = True
 
 

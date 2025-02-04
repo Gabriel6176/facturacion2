@@ -1,0 +1,460 @@
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 113, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.025'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 145
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 113, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.025'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 94364
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 113, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 94427
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 113, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 94992
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 113, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 94992
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 113, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 94992
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 113, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 95020
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 113, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 94957
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 113, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 92907
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 114, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 92841
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 114, in process_files
+    df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 92949
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 118, in process_files
+    df2_filtrado = df2[(df2['Mes'] == int(mes)) & (df2['Año'] == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 92962
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 119, in process_files
+    df2_filtrado = df2[(df2['Mes'] == int(mes)) & (df2['Año'] == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 92910
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 111, in process_files
+    df2['Fecha'] = pd.to_datetime(df2.iloc[:, 6], format='%d/%m/%Y', errors='coerce', dtype={6: int})
+TypeError: to_datetime() got an unexpected keyword argument 'dtype'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 93067
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 114, in process_files
+    df2['Mes'] = int(df2['Fecha'].dt.month)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\series.py", line 248, in wrapper
+    raise TypeError(f"cannot convert the series to {converter}")
+TypeError: cannot convert the series to <class 'int'>
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 96961
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 119, in process_files
+    df2_filtrado = df2[(df2['Mes'] == int(mes)) & (df2['Año'] == int(año))]
+ValueError: invalid literal for int() with base 10: '2.024'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 92910
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 64, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 114, in process_files
+    df2['Mes'] = df2['Fecha'].dt.month.astype(int)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\generic.py", line 6643, in astype
+    new_data = self._mgr.astype(dtype=dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 430, in astype
+    return self.apply(
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 363, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\blocks.py", line 758, in astype
+    new_values = astype_array_safe(values, dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 237, in astype_array_safe
+    new_values = astype_array(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 182, in astype_array
+    values = _astype_nansafe(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 101, in _astype_nansafe
+    return _astype_float_to_int_nansafe(arr, dtype, copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 145, in _astype_float_to_int_nansafe
+    raise IntCastingNaNError(
+pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 127173
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 52, in file_upload_view
+    año = int(request.POST.get('año'))
+ValueError: invalid literal for int() with base 10: '2.025'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 76653
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 80, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 130, in process_files
+    df2['Mes'] = df2['Fecha'].dt.month.astype(int)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\generic.py", line 6643, in astype
+    new_data = self._mgr.astype(dtype=dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 430, in astype
+    return self.apply(
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 363, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\blocks.py", line 758, in astype
+    new_values = astype_array_safe(values, dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 237, in astype_array_safe
+    new_values = astype_array(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 182, in astype_array
+    values = _astype_nansafe(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 101, in _astype_nansafe
+    return _astype_float_to_int_nansafe(arr, dtype, copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 145, in _astype_float_to_int_nansafe
+    raise IntCastingNaNError(
+pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 127591
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 80, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 130, in process_files
+    df2['Mes'] = df2['Fecha'].dt.month.astype(int)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\generic.py", line 6643, in astype
+    new_data = self._mgr.astype(dtype=dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 430, in astype
+    return self.apply(
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 363, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\blocks.py", line 758, in astype
+    new_values = astype_array_safe(values, dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 237, in astype_array_safe
+    new_values = astype_array(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 182, in astype_array
+    values = _astype_nansafe(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 101, in _astype_nansafe
+    return _astype_float_to_int_nansafe(arr, dtype, copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 145, in _astype_float_to_int_nansafe
+    raise IntCastingNaNError(
+pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 127595
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 67, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 117, in process_files
+    df2['Mes'] = df2['Fecha'].dt.month.astype(int)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\generic.py", line 6643, in astype
+    new_data = self._mgr.astype(dtype=dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 430, in astype
+    return self.apply(
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 363, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\blocks.py", line 758, in astype
+    new_values = astype_array_safe(values, dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 237, in astype_array_safe
+    new_values = astype_array(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 182, in astype_array
+    values = _astype_nansafe(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 101, in _astype_nansafe
+    return _astype_float_to_int_nansafe(arr, dtype, copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 145, in _astype_float_to_int_nansafe
+    raise IntCastingNaNError(
+pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 126938
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 67, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 117, in process_files
+    df2['Mes'] = df2['Fecha'].dt.month.astype(int)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\generic.py", line 6643, in astype
+    new_data = self._mgr.astype(dtype=dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 430, in astype
+    return self.apply(
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 363, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\blocks.py", line 758, in astype
+    new_values = astype_array_safe(values, dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 237, in astype_array_safe
+    new_values = astype_array(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 182, in astype_array
+    values = _astype_nansafe(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 101, in _astype_nansafe
+    return _astype_float_to_int_nansafe(arr, dtype, copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 145, in _astype_float_to_int_nansafe
+    raise IntCastingNaNError(
+pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 126938
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 69, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 119, in process_files
+    df2['Mes'] = df2['Fecha'].dt.month.astype(int)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\generic.py", line 6643, in astype
+    new_data = self._mgr.astype(dtype=dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 430, in astype
+    return self.apply(
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 363, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\blocks.py", line 758, in astype
+    new_values = astype_array_safe(values, dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 237, in astype_array_safe
+    new_values = astype_array(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 182, in astype_array
+    values = _astype_nansafe(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 101, in _astype_nansafe
+    return _astype_float_to_int_nansafe(arr, dtype, copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 145, in _astype_float_to_int_nansafe
+    raise IntCastingNaNError(
+pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 126938
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 69, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 119, in process_files
+    df2['Mes'] = df2['Fecha'].dt.month.astype(int)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\generic.py", line 6643, in astype
+    new_data = self._mgr.astype(dtype=dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 430, in astype
+    return self.apply(
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\managers.py", line 363, in apply
+    applied = getattr(b, f)(**kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\internals\blocks.py", line 758, in astype
+    new_values = astype_array_safe(values, dtype, copy=copy, errors=errors)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 237, in astype_array_safe
+    new_values = astype_array(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 182, in astype_array
+    values = _astype_nansafe(values, dtype, copy=copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 101, in _astype_nansafe
+    return _astype_float_to_int_nansafe(arr, dtype, copy)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\dtypes\astype.py", line 145, in _astype_float_to_int_nansafe
+    raise IntCastingNaNError(
+pandas.errors.IntCastingNaNError: Cannot convert non-finite values (NA or inf) to integer
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 126938
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 53, in file_upload_view
+    tipo_proceso = form.cleaned_data['tipo_proceso']
+KeyError: 'tipo_proceso'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 76589
