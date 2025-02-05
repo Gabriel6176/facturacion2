@@ -458,3 +458,57 @@ Traceback (most recent call last):
     tipo_proceso = form.cleaned_data['tipo_proceso']
 KeyError: 'tipo_proceso'
 "POST /facturacion/upload/?form=form1 HTTP/1.1" 500 76589
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view facturacion.views.file_upload_view didn't return an HttpResponse object. It returned None instead.
+"GET /facturacion/upload/?form=form1 HTTP/1.1" 500 67854
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 204, in _get_response
+    self.check_response(response, callback)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 332, in check_response
+    raise ValueError(
+ValueError: The view facturacion.views.file_upload_view didn't return an HttpResponse object. It returned None instead.
+"GET /facturacion/upload/?form=form1 HTTP/1.1" 500 67985
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 62, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 132, in process_files
+    total = (precio * cantidad) if not np.isnan(precio) else np.nan
+TypeError: ufunc 'isnan' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 107890
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 62, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 189, in process_files
+    df_tx_noencontrados['Fecha'] = df_tx_noencontrados['Fecha'].dt.date
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\generic.py", line 6299, in __getattr__
+    return object.__getattribute__(self, name)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\accessor.py", line 224, in __get__
+    accessor_obj = self._accessor(obj)
+  File "C:\Users\PC\Python\lib\site-packages\pandas\core\indexes\accessors.py", line 643, in __new__
+    raise AttributeError("Can only use .dt accessor with datetimelike values")
+AttributeError: Can only use .dt accessor with datetimelike values
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 124089

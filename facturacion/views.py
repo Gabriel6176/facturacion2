@@ -15,6 +15,9 @@ from django.db.models import F, Sum
 from django.contrib import messages
 from .forms import PresupuestoForm
 from decimal import Decimal, InvalidOperation
+import numpy as np  # Importa numpy para manejar NaN
+from openpyxl.styles import NamedStyle
+import openpyxl
 
 @login_required
 def file_upload_view(request):
@@ -28,57 +31,55 @@ def file_upload_view(request):
     selected_form_class = form_classes.get(selected_form_key)
 
     if not selected_form_class:
-        return HttpResponse("Formulario no válido", status=400)
+        return HttpResponse("Formulario no válido", status=400)  # Manejar formulario inválido
 
-    # Obtener todas las opciones de Mes y Año desde la base de datos
+    # Obtener opciones de Mes y Año desde la base de datos
     opciones_mes_ano = MesAno.objects.all()
-
-    # Extraer meses únicos
     opciones_mes = []
     seen_mes = set()
     for opcion in opciones_mes_ano:
         if opcion.mes not in seen_mes:
             opciones_mes.append(opcion)
             seen_mes.add(opcion.mes)
-
-    # Extraer años únicos
     opciones_anos = sorted(set(opcion.año for opcion in opciones_mes_ano))
 
+    # Si es una solicitud POST (cuando se envía el formulario)
     if request.method == 'POST':
-        # Procesar datos enviados
+        print("Procesando solicitud POST...")  # Depuración
         form = selected_form_class(request.POST, request.FILES)
         if form.is_valid():
-            mes = form.cleaned_data['mes']  # Obtener mes desde el formulario
-            año = form.cleaned_data['año']  # Obtener año desde el formulario
+            mes = form.cleaned_data['mes']
+            año = form.cleaned_data['año']
             tipo_proceso = form.cleaned_data['tipo_proceso']
-            print(f"Mes: {mes} ({type(mes)})")
-            print(f"Año: {año} ({type(año)})")
-            print(f"Tipo de proceso: {tipo_proceso} ({type(tipo_proceso)})")
-            
-
-            # Procesar archivo subido
             uploaded_file = request.FILES['file']
+
+            # Guardar el archivo subido
             uploaded_file_path = os.path.join(settings.MEDIA_ROOT, uploaded_file.name)
             with open(uploaded_file_path, 'wb+') as destination:
                 for chunk in uploaded_file.chunks():
                     destination.write(chunk)
 
-            # Realizar el procesamiento
+            # Procesar los archivos
             base_file_path = os.path.join(settings.MEDIA_ROOT, 'base.xlsx')
             output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
 
-            # Retornar vista de éxito
-            output_filename = os.path.basename(output_file_path)
-            return render(request, 'facturacion/success.html', {'output_file': output_filename})
+            # Redirigir a la página de éxito
+            return render(request, 'facturacion/success.html', {'output_file': os.path.basename(output_file_path)})
 
-    # Renderizar formulario
+        else:
+            print("Errores en el formulario:", form.errors)  # Depuración de errores
+            return HttpResponse("Formulario inválido. Por favor revisa los datos enviados.", status=400)
+
+    # Si es una solicitud GET (cuando se muestra el formulario)
     return render(request, 'facturacion/upload.html', {
         'form': selected_form_class(),
         'form_type': selected_form_key,
         'opciones_mes': opciones_mes,
         'opciones_anos': opciones_anos,
-        'mostrar_volver': True
+        'mostrar_volver': True,
     })
+
+
 
 @login_required
 def file_download_view(request, filename):
@@ -91,199 +92,122 @@ def file_download_view(request, filename):
     return HttpResponse("Archivo no encontrado", status=404)
 
 def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
-    print(f"Mes recibido: {mes} ({type(mes)})")
-    print(f"Año recibido: {año} ({type(año)})")
-    print(f"Tipo de proceso recibido: {tipo_proceso} ({type(tipo_proceso)})")
+    print("Inicio de process_files")
 
-    mes = str(mes)  # Convertir mes a cadena
-    año = str(año)  # Convertir año a cadena
+    # 1. Cargar archivos
+    print("Cargando archivos...")
+    df1 = pd.read_excel(uploaded_file_path, sheet_name='TX', usecols="A:B", header=None, skiprows=1, names=['TX', 'Lote'])
+    df4 = pd.read_excel(base_file_path, sheet_name='Precios', usecols="A:C", header=None, names=['Codigo', 'Desc', 'Precio'])
 
-    # Cargar `df1` desde el archivo subido por el usuario, usando la hoja `TX`
-    df1 = pd.read_excel(uploaded_file_path, sheet_name='TX', usecols="A:B", header=None)
+    sheet_name = 'raw_data_internacion' if tipo_proceso == 'internacion' else 'raw_data'
+    df2 = pd.read_excel(base_file_path, sheet_name=sheet_name, usecols="A:Q", header=None)
 
-    # Selección condicional del DataFrame `df2`
-    if tipo_proceso == 'internacion':
-        df2 = pd.read_excel(base_file_path, sheet_name='raw_data_internacion', usecols="A:Q", header=None)
-    else:
-        df2 = pd.read_excel(base_file_path, sheet_name='raw_data', usecols="A:Q", header=None)
+    # Asignar nombres de columnas a df2
+    df2.columns = ['Nombre y apellido Afiliado', 'DNI', 'Nro Afiliado', 'Col4', 'Col5', 'TX', 'Fecha', 'Codigo', 'Descripcion',
+                   'Cantidad', 'Col10', 'Col11', 'Col12', 'Col13', 'Col14', 'Col15', 'Col16']
 
-    # Cargar `df4` desde el archivo base
-    df4 = pd.read_excel(base_file_path, sheet_name='Precios', usecols="A:C", header=None)
+    # Crear columna 'DNI' extrayendo caracteres de 'Nro Afiliado'
+    df2['DNI'] = df2['Nro Afiliado'].astype(str).str[3:11]
 
-    # Crear DataFrames vacíos para clasificar los registros
-    df_facturacion_ctx = pd.DataFrame(columns=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
-    df_facturacion_stx = pd.DataFrame(columns=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
-    df_tx_viejos = pd.DataFrame(columns=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
-    df_tx_noencontrados = pd.DataFrame(columns=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])
+    # 2. Convertir fecha y filtrar por mes y año
+    df2['Fecha'] = pd.to_datetime(df2['Fecha'], format='%d/%m/%Y', errors='coerce')
+    df2_filtrado = df2.dropna(subset=['Fecha'])
+    df2_filtrado = df2_filtrado[(df2_filtrado['Fecha'].dt.month == int(mes)) & 
+                                (df2_filtrado['Fecha'].dt.year == int(año))]
 
-    # Agregar una columna "procesado" a df1 con valores iniciales en False
+    # Limpieza de espacios en los códigos
+    df4['Codigo'] = df4['Codigo'].astype(str).str.strip()
+    df2['Codigo'] = df2['Codigo'].astype(str).str.strip()
+
+    # 3. Convertir df4 en diccionario para búsqueda rápida
+    precio_dict = df4.set_index('Codigo')['Precio'].to_dict()
+
+    # 4. Inicializar DataFrames de clasificación
+    columnas_output = ['Nombre y apellido Afiliado', 'DNI', 'Nro Afiliado', 'Fecha', 'Cantidad', 'Codigo', 'Descripcion', 'Precio', 'Total', 'TX', 'Lote']
+    df_facturacion_ctx = pd.DataFrame(columns=columnas_output)
+    df_facturacion_stx = pd.DataFrame(columns=columnas_output)
+    df_tx_viejos = pd.DataFrame(columns=columnas_output)
+    df_tx_noencontrados = pd.DataFrame(columns=columnas_output)
+
     df1['procesado'] = False
 
-    df2['Fecha'] = pd.to_datetime(df2.iloc[:, 6], format='%d/%m/%Y', errors='coerce')
-
-    # Extraer mes y año como enteros de la columna 'Fecha'
-    df2['Mes'] = df2['Fecha'].dt.month
-    df2['Año'] = df2['Fecha'].dt.year
-
-    print("df2['Mes']:", df2['Mes'].dtype)
-    print("df2['Año']:", df2['Año'].dtype)
-
-    # Filtrar el DataFrame usando las columnas de mes y año como cadenas
-    df2_filtrado = df2[
-        (df2['Mes'].astype(str) == mes) & 
-        (df2['Año'].astype(str) == año)
-    ]
-
-    # Eliminar las columnas auxiliares 'Mes' y 'Año' (opcional)
-    df2_filtrado = df2_filtrado.drop(columns=['Mes', 'Año'])
-
-    print(df2_filtrado)
-    # Filtrar `df2` por mes y año (columna 6 -> Fecha en formato DD/MM/YYYY)
-    #df2['Fecha'] = pd.to_datetime(df2.iloc[:, 6], format='%d/%m/%Y', errors='coerce')
-    #print(df2)
-    #df2_filtrado = df2[(df2['Fecha'].dt.month == int(mes)) & (df2['Fecha'].dt.year == int(año))]
-    #mes = int(mes)
-    #año = int(año)
-    #print (df2_filtrado)
-
-    # Iterar sobre el DataFrame filtrado `df2_filtrado`
+    # 5. Procesar df2 filtrado
     for _, row in df2_filtrado.iterrows():
-        valor_buscar = row[5]  # Valor en la columna 5
-        modified_value = str(row[2])[3:-2] if isinstance(row[2], str) else row[2]  # Modificar columna 2
-
-        # Nueva lógica para buscar el precio en `df4` usando la columna 7 del registro actual
-        df4_filtered = df4[df4.iloc[:, 0].astype(str).str.replace(" ", "", regex=False) == str(row[7]).replace(" ", "")]
-        if not df4_filtered.empty:
-            precio = df4_filtered.iloc[0, 2]  # Extraer el precio
+        tx_value = row['TX']
+        codigo = row['Codigo']
+        cantidad = row['Cantidad']
+        precio = precio_dict.get(codigo, np.nan)
+        #print(codigo, " - ", precio)
+        # Calcular el total solo si el precio es numérico
+        if isinstance(precio, (int, float)) and not np.isnan(precio) and pd.notna(cantidad):
+            total = precio * cantidad
         else:
-            precio = "NO ENCONTRADO"
+            total = np.nan
 
-        # Cálculo del total (cantidad * precio) con manejo de errores
-        try:
-            cantidad = int(row[9])  # Intentar convertir a entero
-        except (ValueError, TypeError):
-            cantidad = 0  # O un valor predeterminado, o manejar el error como necesites
-            print(f"Error: cantidad no válida en la fila: {row}")
+        lote = df1.loc[df1['TX'] == tx_value, 'Lote'].values[0] if tx_value in df1['TX'].values else None
 
-        try:
-            total = float(precio) * float(cantidad) if isinstance(precio, (int, float)) and pd.notna(cantidad) else None
-        except (ValueError, TypeError):
-            total = None
-            print(f"Error: precio o cantidad no válidos en la fila: {row}")
+        row_to_add = pd.DataFrame([[row['Nombre y apellido Afiliado'], row['DNI'], row['Nro Afiliado'], row['Fecha'], cantidad, codigo,
+                                    row['Descripcion'], precio, total, tx_value, lote]], columns=columnas_output)
 
-        # Obtener el valor del lote desde la columna B de df1 basado en la coincidencia
-        valor_lote = df1.loc[df1.iloc[:, 0] == valor_buscar, 1].values[0] if valor_buscar in df1.iloc[:, 0].values else None
-
-        # Crear el registro procesado como DataFrame
-        row_to_add = pd.DataFrame({
-            1: [row[0]], 
-            2: [modified_value], 
-            3: [row[2]], 
-            4: [row[6]],  # Fecha
-            5: [cantidad], 
-            6: [row[7]], 
-            7: [row[8]], 
-            8: [precio],  # Precio obtenido de df4
-            9: [total],   # Total calculado
-            10: [valor_buscar],
-            11: [valor_lote]  # Valor del lote obtenido de la columna B de df1
-        })
-
-        # Verificar si el valor está en df1
-        if valor_buscar in df1.iloc[:, 0].values:
-            # Si está en df1, guardar en df_facturacion_ctx y marcar como procesado
+        if tx_value in df1['TX'].values:
             df_facturacion_ctx = pd.concat([df_facturacion_ctx, row_to_add], ignore_index=True)
-            df1.loc[df1.iloc[:, 0] == valor_buscar, 'procesado'] = True
+            df1.loc[df1['TX'] == tx_value, 'procesado'] = True
         else:
-            # Si no está en df1, guardar en df_facturacion_stx
             df_facturacion_stx = pd.concat([df_facturacion_stx, row_to_add], ignore_index=True)
 
-    # Iterar sobre los registros de df1 donde 'procesado' es False, empezando desde la segunda fila
-    for _, row_df1 in df1.iloc[1:][df1['procesado'] == False].iterrows():
-        valor_buscar = row_df1[0]  # Valor en la columna 0 de `df1`
-        valor_lote = row_df1[1]  # Valor del lote desde la columna 1 de `df1`
+    # 6. Procesar TXs no encontradas
+    df1_no_procesados = df1[df1['procesado'] == False]
 
-        # Buscar en df2 el valor en la columna 5
-        matches = df2[df2.iloc[:, 5] == valor_buscar]
+    for _, row_df1 in df1_no_procesados.iterrows():
+        tx_value = row_df1['TX']
+        lote = row_df1['Lote']
+        matches = df2[df2['TX'] == tx_value]
 
         if not matches.empty:
-            # Si se encuentra en df2, iterar sobre las coincidencias
             for _, row in matches.iterrows():
-                modified_value = str(row[2])[3:-2] if isinstance(row[2], str) else row[2]  # Modificar columna 2
+                codigo = row['Codigo']
+                cantidad = row['Cantidad']
+                precio = precio_dict.get(codigo, np.nan)
 
-                # Nueva lógica para buscar el precio en df4
-                df4_filtered = df4[df4.iloc[:, 0].astype(str).str.replace(" ", "", regex=False) == str(row[7]).replace(" ", "")]
-                if not df4_filtered.empty:
-                    precio = df4_filtered.iloc[0, 2]  # Precio tomado de df4
+                if isinstance(precio, (int, float)) and not np.isnan(precio) and pd.notna(cantidad):
+                    total = precio * cantidad
                 else:
-                    precio = "NO ENCONTRADO"
+                    total = np.nan
 
-                # Cálculo del total (cantidad * precio)
-                cantidad = row[9]
-                total = float(precio) * float(cantidad) if isinstance(precio, (int, float)) and pd.notna(cantidad) else None
+                row_to_add = pd.DataFrame([[row['Nombre y apellido Afiliado'], row['DNI'], row['Nro Afiliado'], row['Fecha'], cantidad, codigo,
+                                            row['Descripcion'], precio, total, tx_value, lote]], columns=columnas_output)
 
-                # Crear registro para TX encontrada
-                row_to_add = pd.DataFrame({
-                    1: [row[0]], 
-                    2: [modified_value], 
-                    3: [row[2]], 
-                    4: [row[6]],  # Fecha
-                    5: [cantidad], 
-                    6: [row[7]], 
-                    7: [row[8]], 
-                    8: [precio],  # Precio obtenido de df4
-                    9: [total],   # Total calculado
-                    10: [valor_buscar],
-                    11: [valor_lote]  # Valor del lote obtenido de la columna B de df1
-                })
-
-                # Agregar a df_tx_viejos
                 df_tx_viejos = pd.concat([df_tx_viejos, row_to_add], ignore_index=True)
-
-                # Marcar como procesado en df1
-                df1.loc[df1.iloc[:, 0] == valor_buscar, 'procesado'] = True
+                df1.loc[df1['TX'] == tx_value, 'procesado'] = True
         else:
-            # Si no se encuentra en df2, agregar a df_tx_noencontrados
-            row_to_add = pd.DataFrame({
-                1: ["NO ENCONTRADO"], 
-                2: [None], 
-                3: [None], 
-                4: [None], 
-                5: [None], 
-                6: [None], 
-                7: [None], 
-                8: [None], 
-                9: [None], 
-                10: [valor_buscar],
-                11: [valor_lote]
-            })
+            row_to_add = pd.DataFrame([["NO ENCONTRADO", None, None, None, None, None, None, None, None, tx_value, lote]], 
+                                      columns=columnas_output)
             df_tx_noencontrados = pd.concat([df_tx_noencontrados, row_to_add], ignore_index=True)
+
     
-
-    # Asignar nombres de columnas
-    column_names = [
-        df2.iloc[0, 0], "DNI", df2.iloc[0, 2], df2.iloc[0, 6], df2.iloc[0, 9], 
-        df2.iloc[0, 7], df2.iloc[0, 8], "Precio", "Total", "TX", "LOTE"
-    ]
-
-    df_facturacion_ctx.columns = column_names
-    df_facturacion_stx.columns = column_names
-    df_tx_viejos.columns = column_names
-    df_tx_noencontrados.columns = column_names
-
-    # Generar nombre de archivo de salida
+    # 7. Guardar los DataFrames en Excel
     output_filename = f"facturacion_{datetime.datetime.now().strftime('%d%b%y')}.xlsx"
     output_file_path = os.path.join(settings.MEDIA_ROOT, output_filename)
 
-    # Guardar ambos DataFrames en diferentes hojas del archivo Excel
+    # Crear estilo de fecha para Excel
+    date_style = NamedStyle(name="date_style", number_format="DD/MM/YYYY")
+
     with pd.ExcelWriter(output_file_path, engine='openpyxl') as writer:
         df_facturacion_ctx.to_excel(writer, sheet_name='Facturación Con TX', index=False)
-        df_facturacion_stx.to_excel(writer, sheet_name='Facturacion Sin TX', index=False)
-        df_tx_viejos.to_excel(writer, sheet_name='TX_Viejos', index=False),
-        df_tx_noencontrados.to_excel(writer, sheet_name='TX_NoEncontrados', index=False)
-
+        df_facturacion_stx.to_excel(writer, sheet_name='Facturación Sin TX', index=False)
+        df_tx_viejos.to_excel(writer, sheet_name='TX Viejos', index=False)
+        df_tx_noencontrados.to_excel(writer, sheet_name='TX No Encontrados', index=False)
+    
+    # Accede al archivo de Excel para aplicar estilos
+        workbook = writer.book
+        for sheet_name in writer.sheets:  # Iterar por cada hoja
+            worksheet = workbook[sheet_name]
+            for col in worksheet.iter_cols(min_col=4, max_col=4):  # La columna 'Fecha' (ajustar si cambia)
+                for cell in col:
+                    cell.style = date_style
 
     return output_file_path
+
 
 @login_required
 def dashboard_view(request):

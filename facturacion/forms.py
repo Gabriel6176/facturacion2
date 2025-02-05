@@ -10,17 +10,16 @@ class UploadFileForm1(BaseUploadFileForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['file'].label = "Seleccione archivo Excel con Listado de TX de CSS"
-        self.fields['tipo_proceso'] = forms.ChoiceField(  # Agrega el campo tipo_proceso aquí
+        self.fields['tipo_proceso'] = forms.ChoiceField(
             label='Tipo de Proceso',
             choices=[
-                ('ambulatorio', 'Ambulatorio'),
-                ('internacion', 'Internación'),
+                ('raw_data', 'Ambulatorio'),  # Valores para 'raw_data'
+                ('raw_data_internacion', 'Internación'),  # Valores para 'raw_data_internacion'
             ],
             required=True
         )
-        
-        # Inicializar los campos con los datos de MesAno (si existen)
-        if kwargs.get('initial'):  # Verificar si se proporcionan datos iniciales
+
+        if kwargs.get('initial'):
             initial = kwargs['initial']
             if 'mes' in initial:
                 self.fields['mes'].initial = initial['mes']
@@ -29,7 +28,6 @@ class UploadFileForm1(BaseUploadFileForm):
 
     def clean_año(self):
         año = self.cleaned_data['año']
-        # Validaciones adicionales para año (rango, etc.)
         return año
 
     def clean_mes(self):
