@@ -18,6 +18,7 @@ from decimal import Decimal, InvalidOperation
 import numpy as np  # Importa numpy para manejar NaN
 from openpyxl.styles import NamedStyle
 import openpyxl
+from openpyxl.styles import Font
 
 @login_required
 def file_upload_view(request):
@@ -201,10 +202,13 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
     # Accede al archivo de Excel para aplicar estilos
         workbook = writer.book
         for sheet_name in writer.sheets:  # Iterar por cada hoja
-            worksheet = workbook[sheet_name]
+            worksheet = workbook[sheet_name]            
             for col in worksheet.iter_cols(min_col=4, max_col=4):  # La columna 'Fecha' (ajustar si cambia)
                 for cell in col:
                     cell.style = date_style
+            # Aplicar negrita a los títulos (primera fila)
+            for cell in worksheet[1]:  # Primera fila (títulos)
+                cell.font = Font(bold=True)  # Aplicar negrita
 
     return output_file_path
 
