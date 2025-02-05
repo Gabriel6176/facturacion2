@@ -512,3 +512,17 @@ Traceback (most recent call last):
     raise AttributeError("Can only use .dt accessor with datetimelike values")
 AttributeError: Can only use .dt accessor with datetimelike values
 "POST /facturacion/upload/?form=form1 HTTP/1.1" 500 124089
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 65, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 182, in process_files
+    df_facturacion_ctx = pd.DataFrame(facturacion_ctx_rows, columns=columnas_output)
+NameError: name 'columnas_output' is not defined
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 123676

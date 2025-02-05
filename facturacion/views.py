@@ -95,6 +95,12 @@ def file_download_view(request, filename):
 def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
     print("Inicio de process_files")
 
+    # Definir columnas de salida
+    columnas_output = [
+        'Nombre y apellido Afiliado', 'DNI', 'Nro Afiliado', 'Fecha', 
+        'Cantidad', 'Codigo', 'Descripcion', 'Precio', 'Total', 'TX', 'Lote'
+    ]
+    
     # 1. Cargar archivos
     print("Cargando archivos...")
     df1 = pd.read_excel(uploaded_file_path, sheet_name='TX', usecols="A:B", header=None, skiprows=1, names=['TX', 'Lote'])
@@ -113,7 +119,7 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
     # 2. Convertir fecha y filtrar por mes y año
     df2['Fecha'] = pd.to_datetime(df2['Fecha'], format='%d/%m/%Y', errors='coerce')
     df2_filtrado = df2.dropna(subset=['Fecha'])
-    df2_filtrado = df2_filtrado[(df2_filtrado['Fecha'].dt.month == int(mes)) & 
+    df2_filtrado = df2_filtrado[(df2_filtrado['Fecha'].dt.month == int(mes)) &
                                 (df2_filtrado['Fecha'].dt.year == int(año))]
 
     # Limpieza de espacios en los códigos
@@ -123,12 +129,11 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
     # 3. Convertir df4 en diccionario para búsqueda rápida
     precio_dict = df4.set_index('Codigo')['Precio'].to_dict()
 
-    # 4. Inicializar DataFrames de clasificación
-    columnas_output = ['Nombre y apellido Afiliado', 'DNI', 'Nro Afiliado', 'Fecha', 'Cantidad', 'Codigo', 'Descripcion', 'Precio', 'Total', 'TX', 'Lote']
-    df_facturacion_ctx = pd.DataFrame(columns=columnas_output)
-    df_facturacion_stx = pd.DataFrame(columns=columnas_output)
-    df_tx_viejos = pd.DataFrame(columns=columnas_output)
-    df_tx_noencontrados = pd.DataFrame(columns=columnas_output)
+    # 4. Inicializar listas para clasificar filas
+    facturacion_ctx_rows = []
+    facturacion_stx_rows = []
+    tx_viejos_rows = []
+    tx_noencontrados_rows = []
 
     df1['procesado'] = False
 
@@ -138,25 +143,22 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
         codigo = row['Codigo']
         cantidad = row['Cantidad']
         precio = precio_dict.get(codigo, np.nan)
-        
+
         # Calcular el total solo si el precio es numérico
-        if isinstance(precio, (int, float)) and not np.isnan(precio) and pd.notna(cantidad):
-            total = precio * cantidad
-        else:
-            total = np.nan
+        total = precio * cantidad if isinstance(precio, (int, float)) and pd.notna(precio) and pd.notna(cantidad) else np.nan
 
         lote = df1.loc[df1['TX'] == tx_value, 'Lote'].values[0] if tx_value in df1['TX'].values else None
 
-        row_to_add = pd.DataFrame([[row['Nombre y apellido Afiliado'], row['DNI'], row['Nro Afiliado'], row['Fecha'], cantidad, codigo,
-                                    row['Descripcion'], precio, total, tx_value, lote]], columns=columnas_output)
+        row_data = [
+            row['Nombre y apellido Afiliado'], row['DNI'], row['Nro Afiliado'],
+            row['Fecha'], cantidad, codigo, row['Descripcion'], precio, total, tx_value, lote
+        ]
 
-        # Concatenar solo si row_to_add tiene datos válidos
-        if not row_to_add.isnull().all(axis=None):
-            if tx_value in df1['TX'].values:
-                df_facturacion_ctx = pd.concat([df_facturacion_ctx, row_to_add], ignore_index=True)
-                df1.loc[df1['TX'] == tx_value, 'procesado'] = True
-            else:
-                df_facturacion_stx = pd.concat([df_facturacion_stx, row_to_add], ignore_index=True)
+        if tx_value in df1['TX'].values:
+            facturacion_ctx_rows.append(row_data)
+            df1.loc[df1['TX'] == tx_value, 'procesado'] = True
+        else:
+            facturacion_stx_rows.append(row_data)
 
     # 6. Procesar TXs no encontradas
     df1_no_procesados = df1[df1['procesado'] == False]
@@ -167,33 +169,31 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
         matches = df2[df2['TX'] == tx_value]
 
         if not matches.empty:
-            for _, row in matches.iterrows():
-                codigo = row['Codigo']
-                cantidad = row['Cantidad']
+            for _, match_row in matches.iterrows():
+                codigo = match_row['Codigo']
+                cantidad = match_row['Cantidad']
                 precio = precio_dict.get(codigo, np.nan)
 
-                if isinstance(precio, (int, float)) and not np.isnan(precio) and pd.notna(cantidad):
-                    total = precio * cantidad
-                else:
-                    total = np.nan
+                total = precio * cantidad if isinstance(precio, (int, float)) and pd.notna(precio) and pd.notna(cantidad) else np.nan
 
-                row_to_add = pd.DataFrame([[row['Nombre y apellido Afiliado'], row['DNI'], row['Nro Afiliado'], row['Fecha'], cantidad, codigo,
-                                            row['Descripcion'], precio, total, tx_value, lote]], columns=columnas_output)
-
-                if not row_to_add.isnull().all(axis=None):
-                    df_tx_viejos = pd.concat([df_tx_viejos, row_to_add], ignore_index=True)
-                    df1.loc[df1['TX'] == tx_value, 'procesado'] = True
+                tx_viejos_rows.append([
+                    match_row['Nombre y apellido Afiliado'], match_row['DNI'], match_row['Nro Afiliado'],
+                    match_row['Fecha'], cantidad, codigo, match_row['Descripcion'], precio, total, tx_value, lote
+                ])
+                df1.loc[df1['TX'] == tx_value, 'procesado'] = True
         else:
-            row_to_add = pd.DataFrame([["NO ENCONTRADO", None, None, None, None, None, None, None, None, tx_value, lote]], 
-                                      columns=columnas_output)
-            if not row_to_add.isnull().all(axis=None):
-                df_tx_noencontrados = pd.concat([df_tx_noencontrados, row_to_add], ignore_index=True)
+            tx_noencontrados_rows.append(["NO ENCONTRADO", None, None, None, None, None, None, None, None, tx_value, lote])
 
-    # 7. Guardar los DataFrames en Excel
+    # 7. Convertir listas a DataFrames
+    df_facturacion_ctx = pd.DataFrame(facturacion_ctx_rows, columns=columnas_output)
+    df_facturacion_stx = pd.DataFrame(facturacion_stx_rows, columns=columnas_output)
+    df_tx_viejos = pd.DataFrame(tx_viejos_rows, columns=columnas_output)
+    df_tx_noencontrados = pd.DataFrame(tx_noencontrados_rows, columns=columnas_output)
+
+    # 8. Guardar los DataFrames en Excel
     output_filename = f"facturacion_{datetime.datetime.now().strftime('%d%b%y')}.xlsx"
     output_file_path = os.path.join(settings.MEDIA_ROOT, output_filename)
 
-    # Crear estilo de fecha para Excel
     date_style = NamedStyle(name="date_style", number_format="DD/MM/YYYY")
 
     with pd.ExcelWriter(output_file_path, engine='openpyxl') as writer:
@@ -202,16 +202,15 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
         df_tx_viejos.to_excel(writer, sheet_name='TX Viejos', index=False)
         df_tx_noencontrados.to_excel(writer, sheet_name='TX No Encontrados', index=False)
 
-        # Acceder al archivo de Excel para aplicar estilos
+        # Aplicar estilos al archivo Excel
         workbook = writer.book
-        for sheet_name in writer.sheets:  # Iterar por cada hoja
+        for sheet_name in writer.sheets:
             worksheet = workbook[sheet_name]
-            for col in worksheet.iter_cols(min_col=4, max_col=4):  # La columna 'Fecha' (ajustar si cambia)
+            for col in worksheet.iter_cols(min_col=4, max_col=4):  # Formatear la columna Fecha
                 for cell in col:
                     cell.style = date_style
-            # Aplicar negrita a los títulos (primera fila)
-            for cell in worksheet[1]:  # Primera fila (títulos)
-                cell.font = Font(bold=True)  # Aplicar negrita
+            for cell in worksheet[1]:  # Negrita en títulos
+                cell.font = Font(bold=True)
 
     return output_file_path
 
