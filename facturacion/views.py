@@ -46,12 +46,13 @@ def file_upload_view(request):
 
     # Si es una solicitud POST (cuando se envía el formulario)
     if request.method == 'POST':
-        print("Procesando solicitud POST...")  # Depuración
+        #print("Procesando solicitud POST...")  # Depuración
         form = selected_form_class(request.POST, request.FILES)
         if form.is_valid():
             mes = form.cleaned_data['mes']
             año = form.cleaned_data['año']
             tipo_proceso = form.cleaned_data['tipo_proceso']
+            #print(f"Tipo de proceso seleccionado: {tipo_proceso}")  # Depuración
             uploaded_file = request.FILES['file']
 
             # Guardar el archivo subido
@@ -93,25 +94,30 @@ def file_download_view(request, filename):
     return HttpResponse("Archivo no encontrado", status=404)
 
 def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
-    print("Inicio de process_files")
+    #print("Inicio de process_files")
 
     # Definir columnas de salida
     columnas_output = [
         'Nombre y apellido Afiliado', 'DNI', 'Nro Afiliado', 'Fecha', 
-        'Cantidad', 'Codigo', 'Descripcion', 'Precio', 'Total', 'TX', 'Lote'
+        'Cantidad', 'Codigo', 'Descripcion', 'Precio', 'Total', 'TX', 'Lote', 'Numerador'
     ]
     
     # 1. Cargar archivos
-    print("Cargando archivos...")
+    #print("Cargando archivos...")
     df1 = pd.read_excel(uploaded_file_path, sheet_name='TX', usecols="A:B", header=None, skiprows=1, names=['TX', 'Lote'])
     df4 = pd.read_excel(base_file_path, sheet_name='Precios', usecols="A:C", header=None, names=['Codigo', 'Desc', 'Precio'])
 
-    sheet_name = 'raw_data_internacion' if tipo_proceso == 'internacion' else 'raw_data'
+    sheet_name = 'raw_data_internacion' if tipo_proceso == 'raw_data_internacion' else 'raw_data'
     df2 = pd.read_excel(base_file_path, sheet_name=sheet_name, usecols="A:Q", header=None)
-
+    
+    
     # Asignar nombres de columnas a df2
-    df2.columns = ['Nombre y apellido Afiliado', 'DNI', 'Nro Afiliado', 'Col4', 'Col5', 'TX', 'Fecha', 'Codigo', 'Descripcion',
+    df2.columns = ['Nombre y apellido Afiliado', 'Numerador', 'Nro Afiliado', 'DNI', 'Col5', 'TX', 'Fecha', 'Codigo', 'Descripcion',
                    'Cantidad', 'Col10', 'Col11', 'Col12', 'Col13', 'Col14', 'Col15', 'Col16']
+    
+    # Convertir TX a string y eliminar espacios en blanco
+    df2['TX'] = df2['TX'].astype(str).str.strip()
+    df1['TX'] = df1['TX'].astype(str).str.strip()
 
     # Crear columna 'DNI' extrayendo caracteres de 'Nro Afiliado'
     df2['DNI'] = df2['Nro Afiliado'].astype(str).str[3:11]
@@ -143,6 +149,7 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
         codigo = row['Codigo']
         cantidad = row['Cantidad']
         precio = precio_dict.get(codigo, np.nan)
+        numerador=row['Numerador']
 
         # Calcular el total solo si el precio es numérico
         total = precio * cantidad if isinstance(precio, (int, float)) and pd.notna(precio) and pd.notna(cantidad) else np.nan
@@ -151,7 +158,7 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
 
         row_data = [
             row['Nombre y apellido Afiliado'], row['DNI'], row['Nro Afiliado'],
-            row['Fecha'], cantidad, codigo, row['Descripcion'], precio, total, tx_value, lote
+            row['Fecha'], cantidad, codigo, row['Descripcion'], precio, total, tx_value, lote,numerador,
         ]
 
         if tx_value in df1['TX'].values:
@@ -167,22 +174,24 @@ def process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso):
         tx_value = row_df1['TX']
         lote = row_df1['Lote']
         matches = df2[df2['TX'] == tx_value]
+        
 
         if not matches.empty:
             for _, match_row in matches.iterrows():
                 codigo = match_row['Codigo']
                 cantidad = match_row['Cantidad']
                 precio = precio_dict.get(codigo, np.nan)
+                numerador=row['Numerador']
 
                 total = precio * cantidad if isinstance(precio, (int, float)) and pd.notna(precio) and pd.notna(cantidad) else np.nan
 
                 tx_viejos_rows.append([
                     match_row['Nombre y apellido Afiliado'], match_row['DNI'], match_row['Nro Afiliado'],
-                    match_row['Fecha'], cantidad, codigo, match_row['Descripcion'], precio, total, tx_value, lote
+                    match_row['Fecha'], cantidad, codigo, match_row['Descripcion'], precio, total, tx_value, lote,numerador,
                 ])
                 df1.loc[df1['TX'] == tx_value, 'procesado'] = True
         else:
-            tx_noencontrados_rows.append(["NO ENCONTRADO", None, None, None, None, None, None, None, None, tx_value, lote])
+            tx_noencontrados_rows.append(["NO ENCONTRADO", None, None, None, None, None, None, None, None, tx_value, lote,None])
 
     # 7. Convertir listas a DataFrames
     df_facturacion_ctx = pd.DataFrame(facturacion_ctx_rows, columns=columnas_output)
@@ -340,7 +349,7 @@ def detalle_presupuesto(request, presupuesto_id):
 @login_required
 def obtener_prestaciones(request):
     servicio = request.GET.get('servicio')
-    print(f"Servicio solicitado: {servicio}")  # Log temporal
+    #print(f"Servicio solicitado: {servicio}")  # Log temporal
     if servicio:
         prestaciones = Prestacion.objects.filter(servicio=servicio).values('id', 'codigo', 'descripcion')
         return JsonResponse(list(prestaciones), safe=False)
