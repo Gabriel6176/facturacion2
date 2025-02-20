@@ -1,19 +1,17 @@
 import pandas as pd
 
-# Nombre base del archivo
-var = 'CSS - 0125'
+# Nombre del archivo de entrada
+input_file = "CSS - 0125_.csv"
+# Nombre del archivo de salida
+output_file = input_file.replace(".csv", ".xlsx")
 
-# Leer el archivo CSV, omitiendo las primeras 2 líneas (que contienen encabezados)
-df = pd.read_csv(var + '.csv', skiprows=2)
+# Leer el archivo CSV con codificación UTF-8 y separador de comas
+df = pd.read_csv(input_file, sep=",", encoding="utf-8", dtype=str, engine="python")
 
-# Verificar si la columna "id_practica" existe en el DataFrame
-if "id_practica" in df.columns:
-    # Reemplazar los espacios por cadenas vacías en la columna "id_practica"
-    df["id_practica"] = df["id_practica"].str.replace(" ", "", regex=False)
+# Guardar en un archivo Excel con el mismo nombre
+df.to_excel(output_file, index=False, engine="openpyxl")
 
-# Guardar el DataFrame en un archivo Excel
-df.to_excel(var + '.xlsx', index=False, engine='openpyxl')
+print(f"Archivo convertido correctamente: {output_file}")
 
-print(f"El archivo ha sido guardado como {var}.xlsx")
 
 

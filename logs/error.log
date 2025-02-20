@@ -613,3 +613,45 @@ Traceback (most recent call last):
     raise ValueError(err) from err
 ValueError: 11 columns passed, passed data had 12 columns
 "POST /facturacion/upload/?form=form1 HTTP/1.1" 500 154717
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 66, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 155, in process_files
+    total = precio * cantidad if isinstance(precio, (int, float)) and pd.notna(precio) and pd.notna(cantidad) else np.nan
+TypeError: can't multiply sequence by non-int of type 'float'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 120438
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 66, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 155, in process_files
+    total = precio * cantidad if isinstance(precio, (int, float)) and pd.notna(precio) and pd.notna(cantidad) else np.nan
+TypeError: can't multiply sequence by non-int of type 'float'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 120438
+Internal Server Error: /facturacion/upload/
+Traceback (most recent call last):
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\venv\lib\site-packages\django\contrib\auth\decorators.py", line 60, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 66, in file_upload_view
+    output_file_path = process_files(base_file_path, uploaded_file_path, mes, año, tipo_proceso)
+  File "C:\Users\PC\Python\Ejercicios\facturacion\proyecto\myproject\facturacion\views.py", line 155, in process_files
+    total = precio * cantidad if isinstance(precio, (int, float)) and pd.notna(precio) and pd.notna(cantidad) else np.nan
+TypeError: can't multiply sequence by non-int of type 'float'
+"POST /facturacion/upload/?form=form1 HTTP/1.1" 500 120438
